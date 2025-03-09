@@ -2,9 +2,13 @@
 
 - VPSI project, desc to be updated.
 
-## project dependencies
-- Gradle project SDK: JVM 19 - https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html
-- Thymeleaf 3.1.3, release
+## requirements
+- **Gradle** project SDK: **JVM 17** - https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+
+## dependencies
+- **Thymeleaf**
+- **Spring boot**
+- **slf4j** for logging
 
 ## todo for backend
 - add spring boot for server
