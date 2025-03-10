@@ -9,6 +9,3 @@
 - **Thymeleaf**
 - **Spring boot**
 - **slf4j** for logging
-
-## todo for backend
-- add spring boot for server
