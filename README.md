@@ -5,7 +5,7 @@ Functionalities:
 - Viewing tests and projects
 - Test examination and validation
 - Grading and managing students in courses
-etc.
+- File exports
 
 ## Requirements
 - **Gradle**
