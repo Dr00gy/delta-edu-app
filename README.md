@@ -17,7 +17,7 @@ Functionalities:
 - **slf4j** for logging (need to add provider!)
 
 ## LINUX
-Build:
+Build (might need to do chmod +x):
 `./gradlew build`
 
 Running with Spring Boot on localhost:8080 via task:
