@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("org.springframework.boot") version("2.7.8")
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
 group = "org.edu_app"
@@ -11,20 +12,27 @@ repositories {
 }
 
 dependencies {
-    // app
-    // thymeleaf
-    implementation("org.thymeleaf:thymeleaf:3.1.3.RELEASE")
-    // spring
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
+    // Thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web") // For web functionality
+
     // Logging
     implementation("org.slf4j:slf4j-api:2.0.9")
-    implementation("ch.qos.logback:logback-classic:1.4.12") // Logback implementation for SLF4J
+    implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging
 
-    // testing
+    // Spring Boot dependencies BOM
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
+
+    // Testing
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    // add once testing for springboot is required
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    // NOTE: Add once testing for springboot is required
 //    testImplementation("org.springframework.boot:spring-boot-starter-test") {
 //        exclude(mapOf("group" to "org.junit.vintage", "module" to "junit-vintage-engine"))
 //    }
@@ -50,3 +58,7 @@ tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }
 
+// Our Main specification for running w/ Gradle (./gradlew bootRun)
+tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+    mainClass.set("org.edu_app.Main")
+}

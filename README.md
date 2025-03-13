@@ -1,11 +1,27 @@
 # delta-edu-app
+VPSI project, an education app for teachers / tutors and students.
+Functionalities:
+- Uploading tests and projects
+- Viewing tests and projects
+- Test examination and validation
+- Grading and managing students in courses
+etc.
 
-- VPSI project, desc to be updated.
+## Requirements
+- **Gradle**
+- Project SDK: **JVM 17** - https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
 
-## requirements
-- **Gradle** project SDK: **JVM 17** - https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
-
-## dependencies
+## Dependencies
 - **Thymeleaf**
-- **Spring boot**
-- **slf4j** for logging
+- **Spring Boot**
+- **slf4j** for logging (need to add provider!)
+
+## LINUX
+Build:
+`./gradlew build`
+
+Running with Spring Boot on localhost:8080 via task:
+`./gradlew bootRun`
+
+## WIN
+To be added!
