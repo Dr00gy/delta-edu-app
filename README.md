@@ -14,13 +14,15 @@ Functionalities:
 ## Dependencies
 - **Thymeleaf**
 - **Spring Boot**
-- **slf4j** for logging (need to add provider!)
+- **slf4j** for logging (need to add provider???!!!)
+- **Jakarta** replacing Java EE
+- **Lombok** to reduce boilerplate code
 
 ## LINUX
-Build (might need to do chmod +x):
+Build (might need to do chmod +x):\
 `./gradlew build`
 
-Running with Spring Boot on localhost:8080 via task:
+Running with Spring Boot on localhost:8080/api via task:\
 `./gradlew bootRun`
 
 ## WIN

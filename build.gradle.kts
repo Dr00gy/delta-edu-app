@@ -23,6 +23,13 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging
 
+    // Jakarta
+    implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.24")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
+
     // Spring Boot dependencies BOM
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
 

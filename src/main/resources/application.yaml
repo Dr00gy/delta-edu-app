@@ -1,0 +1,42 @@
+server:
+  servlet:
+    context-path: "/api"
+
+spring:
+  security:
+    user:
+      name: user
+      password: admin
+    basic:
+      enabled: false
+  application:
+    name: edu
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edu
+    hikari:
+      username: postgres
+      password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+  resources:
+    static-locations: classpath:/static/
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
