@@ -20,8 +20,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") // For web functionality
 
     // Logging
-    implementation("org.slf4j:slf4j-api:2.0.9")
-    implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging
+    implementation("org.slf4j:slf4j-api:1.7.36")
+    implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging (should config logback)
 
     // Jakarta
     implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")

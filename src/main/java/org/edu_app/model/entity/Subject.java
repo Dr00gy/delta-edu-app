@@ -29,4 +29,10 @@ public class Subject {
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
 
+    // Added relationships in last push
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assignments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
 }

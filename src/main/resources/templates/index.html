@@ -6,6 +6,10 @@
     <title>Edu Home</title>
 </head>
 <body>
+    <button class="mode-toggle" onclick="toggleMode()">
+        <img src="/images/moon.svg" alt="Dark Mode" class="mode-icon" id="mode-icon">
+    </button>
+
     <button class="burger" onclick="toggleMenu()">☰</button>
     <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
@@ -23,6 +27,6 @@
         <p th:text="|Today is ${date}|">Today is ...</p>
         <p th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
     </div>
-<script th:src="@{/js/menu.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

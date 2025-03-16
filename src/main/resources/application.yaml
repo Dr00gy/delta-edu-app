@@ -26,7 +26,7 @@ spring:
     mode: HTML
     encoding: UTF-8
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/public/, classpath:/static/, classpath:/images/
 
 logging:
   level:

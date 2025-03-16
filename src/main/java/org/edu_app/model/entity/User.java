@@ -28,10 +28,23 @@ public class User {
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
 
-    @NotBlank(message = "role is mandatory")
+    @NotNull(message = "role is mandatory")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private String operation;
     private String lastModified;
+
+    // Added relationships in last push
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Submission> submissions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subject> subjects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
 }

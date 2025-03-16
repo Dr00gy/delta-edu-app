@@ -14,7 +14,7 @@ Functionalities:
 ## Dependencies
 - **Thymeleaf**
 - **Spring Boot**
-- **slf4j** for logging (need to add provider???!!!)
+- **slf4j** for logging (w/ Spring Boot starter logging - logback)
 - **Jakarta** replacing Java EE
 - **Lombok** to reduce boilerplate code
 

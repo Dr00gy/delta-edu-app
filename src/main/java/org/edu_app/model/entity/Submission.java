@@ -21,7 +21,6 @@ public class Submission {
     @NotNull
     private LocalDateTime submittedAt;
 
-    @NotNull
     private String studentComment;
 
     @ManyToOne
