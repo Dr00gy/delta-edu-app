@@ -33,6 +33,9 @@ dependencies {
     // Spring Boot dependencies BOM
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
 
+    // serialization
+    implementation("com.google.code.gson:gson:2.12.1")
+
     // Testing
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
