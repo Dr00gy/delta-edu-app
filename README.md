@@ -26,4 +26,4 @@ Running with Spring Boot on localhost:8080/api via task:\
 `./gradlew bootRun`
 
 ## WIN
-To be added!
+gradlew.bat
