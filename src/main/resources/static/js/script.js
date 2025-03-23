@@ -13,18 +13,18 @@ document.addEventListener("DOMContentLoaded", function () {
         menu.classList.remove("show");
     });
 
+    // Closes by clicking outside of the menu
+    //document.addEventListener("click", function (event) {
+        //if (!menu.contains(event.target) && !burger.contains(event.target)) {
+            //menu.classList.remove("show");
+        //}
+    //});
+
     // Dark/light mode
     const modeToggle = document.querySelector(".mode-toggle");
-    const modeIcon = document.getElementById("mode-icon");
 
     modeToggle.addEventListener("click", function () {
         document.body.classList.toggle("dark-mode");
         document.body.classList.toggle("light-mode");
-
-        if (document.body.classList.contains("dark-mode")) {
-            modeIcon.src = "/images/sun.svg";
-        } else {
-            modeIcon.src = "/images/moon.svg";
-        }
     });
 });

@@ -7,7 +7,7 @@
 </head>
 <body>
     <button class="mode-toggle" onclick="toggleMode()">
-        <img src="/images/moon.svg" alt="Dark Mode" class="mode-icon" id="mode-icon">
+        <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" width="30">
     </button>
 
     <button class="burger" onclick="toggleMenu()">☰</button>
@@ -21,6 +21,8 @@
         <a href="submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="grading">Grading</a>
+        <a href="login">Temp login</a>
+        <a href="upload">Temp upload</a>
     </nav>
     <div class="session-info">
         <p th:text="|Hello, ${name}!|">Hello, user!</p>

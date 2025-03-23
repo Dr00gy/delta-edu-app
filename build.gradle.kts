@@ -18,6 +18,7 @@ dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web") // For web functionality
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Logging
     implementation("org.slf4j:slf4j-api:1.7.36")
@@ -33,7 +34,7 @@ dependencies {
     // Spring Boot dependencies BOM
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
 
-    // serialization
+    // Serialization
     implementation("com.google.code.gson:gson:2.12.1")
 
     // Testing
