@@ -27,6 +27,8 @@ spring:
     encoding: UTF-8
   resources:
     static-locations: classpath:/public/, classpath:/static/, classpath:/images/
+  upload:
+    directory: ./uploads
 
 logging:
   level:
