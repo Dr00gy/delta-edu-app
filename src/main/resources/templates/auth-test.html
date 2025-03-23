@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Auth test</h1>
+
+    <!-- Check if the user is authenticated -->
+    <!-- Vars are not in the controller, but from SecurityConfig -->
+    <div th:if="${#authentication.principal != null}">
+        <p>Hello, <span th:text="${#authentication.name}">User</span>!</p>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- If the user is not authenticated -->
+    <div th:if="${#authentication.principal == null}">
+        <p>You are not logged in.</p>
+        <a href="/login">Login</a>
+    </div>
+</body>
+</html>

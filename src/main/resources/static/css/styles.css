@@ -108,6 +108,10 @@ body.dark-mode .session-info {
     background-color: #444;
 }
 
+body.dark-mode .mode-icon {
+    filter: invert(1);
+}
+
 .mode-toggle {
     position: absolute;
     top: 20px;
@@ -129,6 +133,10 @@ body.dark-mode .session-info {
     transition: transform 0.3s ease;
 }
 
-body.dark-mode .mode-icon {
-    transform: rotate(180deg);
+form {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
