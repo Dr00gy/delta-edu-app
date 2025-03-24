@@ -17,6 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/css/stylesLogin.css", "/js/scriptLogin.js").permitAll()
                 .antMatchers("/login").permitAll() // Allow open access to certain pages
                 .anyRequest().authenticated() // All other pages require authentication
             .and()
