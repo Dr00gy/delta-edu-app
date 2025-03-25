@@ -25,10 +25,11 @@ spring:
     suffix: .html
     mode: HTML
     encoding: UTF-8
-  resources:
-    static-locations: classpath:/public/, classpath:/static/, classpath:/images/
   upload:
     directory: ./uploads
+  web:
+    resources:
+      static-locations: classpath:/public/, classpath:/static/, classpath:/images/
 
 logging:
   level:
