@@ -1,4 +1,4 @@
-package vpsi.kelvin.model.dto;
+package org.edu_app.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

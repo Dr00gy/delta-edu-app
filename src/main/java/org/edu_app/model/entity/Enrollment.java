@@ -1,5 +1,4 @@
-package vpsi.kelvin.model.entity;
-
+package org.edu_app.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
