@@ -2,38 +2,40 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    color: #fff;
+    color: black;
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Light Mode here */
+/* Light mode here (Default) */
 body.light-mode {
     background-color: #fff;
-    color: #333;
+    color: #ffffff;
 }
 
 .menu {
     width: 200px;
-    background: #333;
-    color: white;
+    background: #ebebeb;
     position: fixed;
     height: 100%;
     top: 0;
     left: 0;
     padding-top: 50px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
 
 .menu a {
     display: block;
-    color: white;
     text-decoration: none;
+    font-weight: bold;
+    color: black;
     padding: 15px;
     border-bottom: 1px solid #444;
 }
 
 .menu a:hover {
-    background: #555;
+    background: #3a7dcf;
+    color: white;
 }
 
 .burger {
@@ -43,8 +45,7 @@ body.light-mode {
     left: 15px;
     font-size: 24px;
     cursor: pointer;
-    color: white;
-    background: #333;
+    background: #ebebeb;
     border: none;
     padding: 10px;
 }
@@ -52,26 +53,189 @@ body.light-mode {
 .close-btn {
     display: none;
     background: none;
-    color: white;
+    color: black;
     border: none;
     font-size: 24px;
     cursor: pointer;
     margin: 10px;
 }
 
-.session-info {
+.header {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-left: 30%;
-    flex-wrap: wrap;
-    background: #333;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 65%;
+    background: #ebebeb;
     padding: 20px;
+    padding-left: 40px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 600px) {
+.session-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.bigger-p {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lesser-p {
+    font-size: 14px;
+    margin-top: 18px;
+    font-weight: 500;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mode-toggle {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.mode-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.logout {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.logout-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.main-container {
+    display: flex;
+}
+
+.content {
+    flex-grow: 1; /* Takes up the remaining space */
+    padding: 20px;
+    margin-left: 200px;
+    transition: margin-left 0.3s ease;
+}
+
+#db-div {
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    background: #ebebeb;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+}
+
+
+#db-div h2 {
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white; /* Default table BG */
+    color: black;
+}
+
+.custom-table th {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+.custom-table td {
+    padding: 10px;
+    font-weight: 500;
+}
+
+/* NO column borders! */
+.custom-table th, 
+.custom-table td {
+    border-bottom: 1px solid black;
+}
+
+/*
+.custom-table tbody tr:nth-child(even) {
+    background-color: #dff0ff;
+}
+
+.custom-table tbody tr:nth-child(odd) {
+    background-color: #f0f8ff;
+}
+*/
+
+.table-headers {
+    background-color: #ebebeb;
+    color: black;
+}
+
+/* Dark Mode here */
+body.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+body.dark-mode .menu {
+    background-color: #333;
+}
+
+body.dark-mode .menu a {
+    color: white;
+}
+
+body.dark-mode .burger {
+    background-color: #333;
+    color: white;
+}
+
+body.dark-mode .close-btn {
+    color: white;
+}
+
+body.dark-mode .header {
+    background-color: #333;
+}
+
+body.dark-mode #db-div {
+    background-color: #333;
+}
+
+body.dark-mode .custom-table {
+    background-color: white;
+    color: black;
+}
+
+body.dark-mode .table-headers {
+    background-color: #333;
+    color: white;
+}
+
+body.dark-mode .mode-icon {
+    filter: invert(1);
+}
+
+body.dark-mode .logout-icon {
+    filter: invert(1);
+}
+
+@media (max-width: 680px) {
     .menu {
         transform: translateX(-100%);
         width: 200px;
@@ -85,6 +249,14 @@ body.light-mode {
     .menu.show {
         transform: translateX(0);
     }
+    .header {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 25%;
+        text-align: center;
+        gap: 10px;
+        padding-left: 20px;
+    }
     .session-info {
         flex-direction: column;
         align-items: center;
@@ -92,51 +264,7 @@ body.light-mode {
         margin-left: 0;
         width: 100%;
     }
-}
-
-/* Dark Mode here (Default) */
-body.dark-mode {
-    background-color: #121212;
-    color: #fff;
-}
-
-body.dark-mode .menu {
-    background-color: #333;
-}
-
-body.dark-mode .session-info {
-    background-color: #444;
-}
-
-body.dark-mode .mode-icon {
-    filter: invert(1);
-}
-
-.mode-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: 2px solid #fff;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.mode-toggle:hover {
-    background-color: #555;
-}
-
-.mode-icon {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.3s ease;
-}
-
-form {
-    text-align: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .content {
+        margin-left: 0; /* Content to full width */
+    }
 }

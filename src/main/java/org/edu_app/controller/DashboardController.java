@@ -15,7 +15,7 @@ public class DashboardController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
-        model.addAttribute("name", "Dusko");
+        model.addAttribute("name", "Duško");
         model.addAttribute("date", formattedDate);
         model.addAttribute("role", "Student");
         return "index";
