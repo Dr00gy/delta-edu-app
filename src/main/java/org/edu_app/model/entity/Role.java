@@ -1,5 +1,6 @@
-package org.edu_app.model.entity;
+package vpsi.kelvin.model.entity;
 
 public enum Role {
     STUDENT, TEACHER, ADMIN
 }
+

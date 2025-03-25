@@ -1,13 +1,15 @@
-package org.edu_app.model.entity;
+package vpsi.kelvin.model.entity;
+
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vpsi.kelvin.listener.AuditListener;
 
 @Entity
+@EntityListeners(AuditListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,7 +20,6 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private int score;
 
     private String feedback;
@@ -31,4 +32,7 @@ public class Grade {
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
 
+
+    private String operation;
+    private String lastModified;
 }

@@ -1,4 +1,4 @@
-package org.edu_app.model.entity;
+package vpsi.kelvin.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vpsi.kelvin.listener.AuditListener;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@EntityListeners(AuditListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,12 +33,13 @@ public class User {
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
 
-    @NotNull(message = "role is mandatory")
+    @NotBlank(message = "role is mandatory")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private String operation;
     private String lastModified;
+
 
     // Added relationships in last push
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -50,4 +53,7 @@ public class User {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
+
+
+
 }
