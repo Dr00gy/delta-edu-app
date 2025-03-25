@@ -2,7 +2,7 @@ package org.edu_app.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import vpsi.kelvin.listener.AuditListener;
+import org.edu_app.listener.AuditListener;
 
 import java.time.LocalDateTime;
 

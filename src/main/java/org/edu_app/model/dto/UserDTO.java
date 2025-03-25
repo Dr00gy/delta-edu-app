@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vpsi.kelvin.model.entity.Role;
+import org.edu_app.model.entity.Role;
 
 @Data
 @NoArgsConstructor

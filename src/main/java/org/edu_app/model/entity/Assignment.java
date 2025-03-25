@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vpsi.kelvin.listener.AuditListener;
+import org.edu_app.listener.AuditListener;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vpsi.kelvin.listener.AuditListener;
+import org.edu_app.listener.AuditListener;
 
 @Entity
 @EntityListeners(AuditListener.class)
