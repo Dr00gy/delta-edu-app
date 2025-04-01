@@ -43,6 +43,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
+    // db
+    implementation("org.postgresql:postgresql:42.7.5")
     // NOTE: Add once testing for springboot is required
 //    testImplementation("org.springframework.boot:spring-boot-starter-test") {
 //        exclude(mapOf("group" to "org.junit.vintage", "module" to "junit-vintage-engine"))
