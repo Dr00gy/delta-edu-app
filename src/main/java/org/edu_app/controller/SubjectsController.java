@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class SubjectsController {
 
     @GetMapping("/subjects")
-    public String subjects(Model model) { // TODO: Pass the same model for all controllers for one auth user !!!!
+    public String subjects(Model model) { // TODO: Pass the same model for all controllers for one auth user !!!
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
