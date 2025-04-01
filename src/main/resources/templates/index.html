@@ -1,17 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+  <head>
+    <meta content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
     <title>Edu Home</title>
-</head>
-<body>
-    <button class="mode-toggle" onclick="toggleMode()">
-        <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" width="30">
-    </button>
+  </head>
+  <body>
+
+    <header class="header">
+      <div class="session-info">
+        <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+        <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+        <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="mode-toggle" onclick="toggleMode()">
+          <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+        </button>
+        <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+      </div>
+    </header>
 
     <button class="burger" onclick="toggleMenu()">☰</button>
-    <nav class="menu" id="menu">
+
+    <div class="main-container">
+      <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
         <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
         <a href="/api">Dashboard</a>
@@ -21,14 +35,85 @@
         <a href="submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="grading">Grading</a>
-        <a href="login">Temp login</a>
         <a href="upload">Temp upload</a>
-    </nav>
-    <div class="session-info">
-        <p th:text="|Hello, ${name}!|">Hello, user!</p>
-        <p th:text="|Today is ${date}|">Today is ...</p>
-        <p th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+      </nav>
+
+      <div class="content"> <!-- NOTE: Student view -->
+        <div id="db-div" class="container-sub">
+          <h2>Your latest submissions:</h2>
+          <table class="custom-table">
+            <thead>
+                <tr class="table-headers">
+                    <th>Assignment:</th>
+                    <th>Course:</th>
+                    <th>Date submitted:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Boeing essay</td>
+                    <td>English 1</td>
+                    <td>12.03.2025</td>
+                </tr>
+                <tr>
+                    <td>Beyoncé essay</td>
+                    <td>English 1</td>
+                    <td>12.03.2025</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div id="db-div" class="container-grad">
+          <h2>Your latest grades:</h2>
+          <table class="custom-table">
+            <thead>
+                <tr class="table-headers">
+                    <th>Assignment:</th>
+                    <th>Course:</th>
+                    <th>Grade:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-status="excellent">
+                    <td>Boeing essay</td>
+                    <td>English 1</td>
+                    <td>1</td>
+                </tr>
+                <tr data-status="poor">
+                    <td>Project in Eclipse</td>
+                    <td>Java 2</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div id="db-div" class="container-exp">
+          <h2>Your latest exports:</h2>
+          <table class="custom-table">
+            <thead>
+                <tr class="table-headers">
+                    <th>Assignment:</th>
+                    <th>Course:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+      </div>
+
     </div>
-<script th:src="@{/js/script.js}"></script>
-</body>
+    <script th:src="@{/js/script.js}"></script>
+    
+  </body>
 </html>

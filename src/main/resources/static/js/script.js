@@ -24,8 +24,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const modeToggle = document.querySelector(".mode-toggle");
 
     modeToggle.addEventListener("click", function () {
-        document.body.classList.toggle("dark-mode");
         document.body.classList.toggle("light-mode");
+        document.body.classList.toggle("dark-mode");
     });
 });
+
+  document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".custom-table tbody tr").forEach(row => {
+          let status = row.getAttribute("data-status");
+
+          if (status === "excellent") {
+              row.style.backgroundColor = "#c8e6c9"; // Light green
+          } else if (status === "average") {
+              row.style.backgroundColor = "#fff9c4"; // Light yellow
+          } else if (status === "poor") {
+              row.style.backgroundColor = "#ffccbc"; // Light red
+          }
+      });
+  });
 

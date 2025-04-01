@@ -4,11 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class GradingController {
 
     @GetMapping("/grading")
-    public String grading(Model model) {
+    public String grading(Model model) { // NOTE: See SubjectsController for TODOs that also apply to Gradings
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
+
+        model.addAttribute("name", "Duško");
+        model.addAttribute("date", formattedDate);
+        model.addAttribute("role", "Student");
 
         return "grading";
     }

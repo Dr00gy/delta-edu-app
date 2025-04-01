@@ -6,8 +6,26 @@
     <title>Edu Subjects</title>
 </head>
 <body>
+
+    <header class="header">
+      <div class="session-info">
+        <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+        <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+        <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="mode-toggle" onclick="toggleMode()">
+          <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+        </button>
+        <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+      </div>
+    </header>
+
     <button class="burger" onclick="toggleMenu()">☰</button>
-    <nav class="menu" id="menu">
+
+    <div class="main-container">
+      <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
         <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
         <a href="/api">Dashboard</a>
@@ -17,7 +35,36 @@
         <a href="submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="grading">Grading</a>
-    </nav>
-<script th:src="@{/js/menu.js}"></script>
-</body>
+        <a href="upload">Temp upload</a>
+      </nav>
+
+      <div class="content">
+        <div id="db-div" class="container-sub">
+          <h2>Your courses:</h2> <!-- NOTE: Student view -->
+          <table class="custom-table">
+            <thead> <!-- TODO: Pagination !!! -->
+                <tr class="table-headers">
+                    <th>Course:</th>
+                    <th>Teacher:</th>
+                    <th>Status:</th>
+                </tr>
+            </thead>
+            <tbody> <!-- TODO: Make courses clickable to link on their page (and add pointer cursor in CSS) -->
+                <tr data-status="average">
+                    <td>English 1</td>
+                    <td>Anna Šmídková</td>
+                    <td>1 left</td>
+                </tr>
+                <tr data-status="excellent">
+                    <td>Java 2</td>
+                    <td>Martin Krucipísek</td>
+                    <td>All done</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+    </div>
+    <script th:src="@{/js/script.js}"></script>
+  </body>
 </html>
