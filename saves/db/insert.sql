@@ -1,10 +1,11 @@
 -- Insert sample data (5 records per table)
-INSERT INTO users (email, first_name, last_name, role, operation, last_modified) VALUES
-('admin@eduapp.com', 'Admin', 'User', 'ADMIN', NULL, NULL),
-('john.doe@eduapp.com', 'John', 'Doe', 'TEACHER', NULL, NULL),
-('jane.smith@eduapp.com', 'Jane', 'Smith', 'TEACHER', NULL, NULL),
-('alice.johnson@eduapp.com', 'Alice', 'Johnson', 'STUDENT', NULL, NULL),
-('bob.williams@eduapp.com', 'Bob', 'Williams', 'STUDENT', NULL, NULL);
+INSERT INTO users (email, password, first_name, last_name, role, operation, last_modified) VALUES
+('admin@eduapp.com', /* admin */'$2a$10$2V/z7WYML43/1n73odfo0ORsxUWXT/zKJKyogg5EDbhqagpjpA916','Admin', 'User', 'ADMIN', NULL, NULL),
+('john.doe@eduapp.com',/* abc123 */'$2a$10$qEH9PQcoLhZ.ZmuCwWtud.x1L9xx5p8Ou.wiHkdfLU.aXAmQPmIq6', 'John', 'Doe', 'TEACHER', NULL, NULL),
+('jane.smith@eduapp.com',/* abc124 */'$2a$10$Ijcdn1K0MWA2ZzwSE33TB.KtNCFn6PhEUKv6rqPdhKRI80THMJ0K6', 'Jane', 'Smith', 'TEACHER', NULL, NULL),
+('alice.johnson@eduapp.com',/* abc125 */ '$2a$10$4W43r.mfTgpRzDymR1UHIO4FdFQMtSDgCET.QgYQNSCQqSL7mXyje', 'Alice', 'Johnson', 'STUDENT', NULL, NULL),
+('bob.williams@eduapp.com',/* abc126 */ '$2a$10$b.TsqsJFMIyU2TguAeOQLuzplzc4chNW4apRHf6HnmjiFQiWSwQEC', 'Bob', 'Williams', 'STUDENT', NULL, NULL);
+
 
 INSERT INTO subjects (name, description, teacher_id) VALUES
 ('Mathematics', 'Advanced Math Course', 2),

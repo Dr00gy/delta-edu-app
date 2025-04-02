@@ -1,6 +1,9 @@
 package org.edu_app.utils;
 import org.edu_app.Main;
 import org.edu_app.model.dto.SubmissionCreateDTO;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +19,12 @@ public class DatabaseManager {
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "1234";
 
+
     private Connection connection;
+
+    public Connection GetConnection() {
+        return this.connection;
+    }
 
     public DatabaseManager() {
         try {
@@ -133,7 +141,6 @@ public class DatabaseManager {
     /**
      * Inserts a submission into the database
      *
-     * @param connection Database connection
      * @param submission The submission data to insert
      * @return true if insertion was successful, false otherwise
      */
@@ -173,5 +180,43 @@ public class DatabaseManager {
             Main.getLogger().error("Error inserting submission: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Creates a UserDetailsService that validates against the database
+     *
+     * @return A UserDetailsService implementation that checks the database
+     */
+    public UserDetailsService createUserDetailsService() {
+        return username -> {
+            String sql = "SELECT * FROM users WHERE email = ?";
+
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, username);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        // User exists, get their details
+                        String email = rs.getString("email");
+                        String password = rs.getString("password");
+                        String role = rs.getString("role");
+
+                        // Return user with appropriate configuration for the password encoder
+                        // Since we're using our custom PepperedPasswordEncoder, we don't need
+                        // to add any prefix - the encoder will handle the pepper
+                        return User
+                                .withUsername(email)
+                                .password(password)
+                                .roles(role)
+                                .build();
+                    }
+                }
+            } catch (SQLException e) {
+                Main.getLogger().error("Error finding user: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            throw new UsernameNotFoundException("User not found: " + username);
+        };
     }
 }
