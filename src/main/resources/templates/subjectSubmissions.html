@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <title>Edu Course Submissions</title>
+</head>
+<body>
+    <header class="header">
+        <div class="session-info">
+          <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+          <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+          <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+        </div>
+  
+        <div class="header-actions">
+          <button class="mode-toggle" onclick="toggleMode()">
+            <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+          </button>
+          <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+        </div>
+      </header>
+
+    <button class="burger" onclick="toggleMenu()">☰</button>
+    <nav class="menu" id="menu">
+        <button class="close-btn" id="close-menu">←</button>
+        <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
+        <a href="/">Dashboard</a>
+        <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
+        <a href="/subjects">Subjects</a>
+        <!-- For students, a view of their homework and projects listed by course. For teachers, student works listed by course. -->
+        <a href="/submissions">Submissions</a>
+        <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
+        <a href="/grading">Grading</a>
+    </nav>
+
+    <div class="content">
+        <div id="db-div" class="container-exp">
+            <h2>English 1:</h2>
+            <h3>Desc:</h3>
+        </div>
+
+        <div id="db-div" class="container-sub">
+          <h2>Your submissions:</h2> <!-- NOTE: Student view -->
+          <table class="custom-table">
+            <thead>
+                <tr class="table-headers">
+                    <th>Assignment:</th>
+                    <th>Date submitted:</th>
+                    <th>Deadline:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-status="average">
+                    <td>Boeing essay</td>
+                    <td>-</td>
+                    <td>13.03.2025</td>
+                </tr>
+                <tr data-status="excellent">
+                    <td>Beyoncé essay</td>
+                    <td>12.03.2025</td>
+                    <td>13.03.2025</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div id="db-div" class="container-exp">
+            <h2>Your grades:</h2>
+            <table class="custom-table">
+              <thead>
+                  <tr class="table-headers">
+                      <th>Assignment:</th>
+                      <th>Date submitted:</th>
+                      <th>Grade:</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+          <h4>Avg.:</h4>
+          </div>
+    </div>
+
+<script th:src="@{/js/menu.js}"></script>
+</body>
+</html>
