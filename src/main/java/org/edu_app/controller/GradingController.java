@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class GradingController {
 
     @GetMapping("/grading")
-    public String grading(Model model) { // NOTE: See SubjectsController for TODOs that also apply to Gradings
+    public String grading(Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
