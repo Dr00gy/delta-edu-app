@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stylesUpload.css}">
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>Upload Files</h1>
+
+    <form method="post" enctype="multipart/form-data" th:action="@{/upload}">
+        <label for="file-upload" class="custom-file-upload">Choose File</label>
+        <input id="file-upload" type="file" name="files" multiple onchange="displayFileNames()"/>
+        <span id="file-names">No files chosen!</span>
+        <button type="submit">Upload</button>
+    </form>
+
+    <div th:if="${message != null}">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div th:if="${filename != null}">
+        <img th:src="@{/files/{fileName}(fileName=${fileName})}" alt="Uploaded File" />
+    </div>
+
+        <!-- Success message -->
+        <div th:if="${success}" class="message success">
+            <p th:text="${success}"></p>
+        </div>
+    
+        <!-- Error message -->
+        <div th:if="${error}" class="message error">
+            <p th:text="${error}"></p>
+        </div>
+    <script th:src="@{/js/scriptUpload.js}"></script>
+
+</body>
+</html>
