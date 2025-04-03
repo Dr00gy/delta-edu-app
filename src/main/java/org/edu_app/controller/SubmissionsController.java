@@ -14,11 +14,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class SubmissionsController {
 
+<<<<<<< Updated upstream
     @Value("${spring.upload.directory}") // From YAML
     private String uploadDirectory;
+=======
+    @GetMapping("/submissions")
+    public String showSubmissions(Model model) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
+
+        model.addAttribute("name", "Duško");
+        model.addAttribute("date", formattedDate);
+        model.addAttribute("role", "Student");
+>>>>>>> Stashed changes
 
     @GetMapping("/upload")
     public String showUploadForm() {

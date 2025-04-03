@@ -11,7 +11,17 @@ import java.time.format.DateTimeFormatter;
 public class DashboardController {
 
     @GetMapping("/")
+<<<<<<< Updated upstream
     public String home(Model model) {
+=======
+    public String showHome(Model model) {
+        // Get authenticated user email
+        String authenticatedEmail = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+
+        // Fetch user details via initial DB manager
+        UserDTO userDetails = dbManager.getUserDetails(authenticatedEmail);
+
+>>>>>>> Stashed changes
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
