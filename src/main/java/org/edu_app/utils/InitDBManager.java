@@ -1,9 +1,13 @@
 package org.edu_app.utils;
 import org.edu_app.Main;
 import org.edu_app.model.dto.SubmissionCreateDTO;
+import org.edu_app.model.dto.UserDTO;
+import org.edu_app.model.entity.Role;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,13 +16,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+public class InitDBManager {
+    // Use Spring to inject values from the application.yaml
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
 
-public class DatabaseManager {
-    // Database connection properties
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/edu_app";
-    private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "1234";
+    @Value("${spring.datasource.hikari.username}")
+    private String dbUser;
 
+    @Value("${spring.datasource.hikari.password}")
+    private String dbPassword;
 
     private Connection connection;
 
@@ -26,7 +34,7 @@ public class DatabaseManager {
         return this.connection;
     }
 
-    public DatabaseManager() {
+    public InitDBManager() {
         try {
             // Load the PostgreSQL JDBC driver
             Class.forName("org.postgresql.Driver");
@@ -42,7 +50,7 @@ public class DatabaseManager {
      */
     public void connect() {
         try {
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             System.out.println("Connected to PostgreSQL database successfully!");
         } catch (SQLException e) {
             System.err.println("Connection to PostgreSQL database failed!");
@@ -137,51 +145,6 @@ public class DatabaseManager {
         return sqlStatements;
     }
 
-
-    /**
-     * Inserts a submission into the database
-     *
-     * @param submission The submission data to insert
-     * @return true if insertion was successful, false otherwise
-     */
-    public void insertSubmission(SubmissionCreateDTO submission) {
-        String sql = "INSERT INTO submissions (submitted_at, student_comment, student_id, assignment_id) VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            // Assuming your DTO has corresponding getter methods
-            // Use current timestamp if not provided
-            pstmt.setTimestamp(1, submission.getSubmittedAt() != null ?
-                    Timestamp.valueOf(submission.getSubmittedAt()) :
-                    new Timestamp(System.currentTimeMillis()));
-            pstmt.setString(2, submission.getStudentComment());
-            pstmt.setLong(3, submission.getStudentId());
-            pstmt.setLong(4, submission.getAssignmentId());
-
-            int rowsAffected = pstmt.executeUpdate();
-
-            // Check if insertion was successful
-            if (rowsAffected > 0) {
-                Main.getLogger().info("Submission inserted successfully!");
-
-                // If you need the generated submission ID
-                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        long submissionId = generatedKeys.getLong(1);
-                        Main.getLogger().info("Generated submission ID: " + submissionId);
-
-                        // If your submission has files or other related data that needs to be inserted,
-                        // you can use the submissionId here to insert them
-                    }
-                }
-
-            }
-
-        } catch (SQLException e) {
-            Main.getLogger().error("Error inserting submission: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Creates a UserDetailsService that validates against the database
      *
@@ -191,21 +154,18 @@ public class DatabaseManager {
         return username -> {
             String sql = "SELECT * FROM users WHERE email = ?";
 
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
                 pstmt.setString(1, username);
 
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
-                        // User exists, get their details
                         String email = rs.getString("email");
                         String password = rs.getString("password");
                         String role = rs.getString("role");
 
-                        // Return user with appropriate configuration for the password encoder
-                        // Since we're using our custom PepperedPasswordEncoder, we don't need
-                        // to add any prefix - the encoder will handle the pepper
-                        return User
-                                .withUsername(email)
+                        return User.withUsername(email)
                                 .password(password)
                                 .roles(role)
                                 .build();
@@ -219,4 +179,38 @@ public class DatabaseManager {
             throw new UsernameNotFoundException("User not found: " + username);
         };
     }
+
+
+    /**
+     * Fetches user details from the database for loading assets based on authenticated user
+     *
+     * @param email The email of the user.
+     * @return UserDTO containing user details.
+     */
+    public UserDTO getUserDetails(String email) {
+        String sql = "SELECT id, email, first_name, last_name, role FROM users WHERE email = ?";
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Long id = rs.getLong("id");
+                    String userEmail = rs.getString("email");
+                    String firstName = rs.getString("first_name");
+                    String lastName = rs.getString("last_name");
+                    String roleName = rs.getString("role");
+
+                    Role role = Role.valueOf(roleName.toUpperCase());
+                    return new UserDTO(id, userEmail, firstName, lastName, role);
+                }
+            }
+        } catch (SQLException e) {
+            Main.getLogger().error("Error fetching user details: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
