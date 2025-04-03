@@ -26,9 +26,9 @@ public class SubmissionsController {
     }
 
     @PostMapping("/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
-        if (file.isEmpty()) {
-            model.addAttribute("error", "Please select a file to upload.");
+    public String multipleFileUpload(@RequestParam("files") MultipartFile[] files, Model model) {
+        if (files.length == 0) {
+            model.addAttribute("error", "Please select at least one file to upload.");
             return "upload";
         }
 
@@ -38,20 +38,22 @@ public class SubmissionsController {
                 directory.mkdirs();
             }
 
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadDirectory + File.separator + file.getOriginalFilename());
-            Files.write(path, bytes);
+            for (MultipartFile file : files) {
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(uploadDirectory + File.separator + file.getOriginalFilename());
+                Files.write(path, bytes);
+            }
 
-            model.addAttribute("success", "File uploaded successfully!");
-            model.addAttribute("fileName", file.getOriginalFilename());
+            model.addAttribute("success", "Files uploaded successfully!");
         } catch (IOException e) {
             e.printStackTrace();
-            model.addAttribute("error", "An error occurred during file upload: " + e.getMessage());
+            model.addAttribute("error", "An error occurred during file upload!");
         }
 
         return "upload";
     }
 }
+
 
 /*package org.edu_app.controller;
 
