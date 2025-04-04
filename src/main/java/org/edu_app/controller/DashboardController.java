@@ -19,7 +19,7 @@ public class DashboardController {
     private InitDBManager dbManager;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String showHome(Model model) {
         // Get authenticated user email
         String authenticatedEmail = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 

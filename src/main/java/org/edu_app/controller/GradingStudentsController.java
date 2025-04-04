@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-public class GradingController {
+public class GradingStudentsController { // In Figma, it is the bottom right overview of students to be graded for an assignment
 
-    @GetMapping("/grading")
-    public String grading(Model model) { // NOTE: See SubjectsController for TODOs that also apply to Gradings
+    @GetMapping("/grading/assignment")
+    public String showSubjectSubmissions(Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
@@ -19,6 +19,6 @@ public class GradingController {
         model.addAttribute("date", formattedDate);
         model.addAttribute("role", "Student");
 
-        return "grading";
+        return "gradingStudents";
     }
 }

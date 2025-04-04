@@ -11,7 +11,8 @@ import java.time.format.DateTimeFormatter;
 public class SubjectsController {
 
     @GetMapping("/subjects")
-    public String subjects(Model model) {
+    public String showSubjects(Model model) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
