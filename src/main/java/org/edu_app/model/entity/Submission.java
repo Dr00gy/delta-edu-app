@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditListener.class)
-
 @Getter
 @Setter
 @AllArgsConstructor

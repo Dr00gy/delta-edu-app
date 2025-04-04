@@ -27,21 +27,20 @@
       <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
         <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
-        <a href="/api">Dashboard</a>
+        <a href="/">Dashboard</a>
         <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
         <a href="subjects">Subjects</a>
         <!-- For students, a view of their homework and projects listed by course. For teachers, student works listed by course. -->
         <a href="submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="grading">Grading</a>
-        <a href="upload">Temp upload</a>
       </nav>
 
       <div class="content">
         <div id="db-div" class="container-sub">
           <h2>Your courses:</h2> <!-- NOTE: Student view -->
           <table class="custom-table">
-            <thead> <!-- TODO: Pagination !!! -->
+            <thead>
                 <tr class="table-headers">
                     <th>Course:</th>
                     <th>Teacher:</th>

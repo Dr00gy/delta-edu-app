@@ -39,14 +39,30 @@ input[type="file"] {
     margin-top: 10px;
 }
 
-/* Message style*/
-p {
+.message {
+    width: 80%;
+    margin: 20px auto;
+    padding: 15px;
     font-size: 1rem;
     font-weight: bold;
-    color: #202020;
+    border-radius: 5px;
+    text-align: center;
 }
 
-#file-name {
+.success {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+}
+
+.error {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}
+
+/* File name display */
+#file-names {
     display: inline-block;
     margin-left: 10px;
     font-size: 1rem;

@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: "/api"
+    context-path: "/"
 
 spring:
   security:
@@ -12,14 +12,19 @@ spring:
   application:
     name: edu
   datasource:
-    url: jdbc:postgresql://localhost:5432/edu
+    url: jdbc:postgresql://localhost:5432/postgres
     hikari:
       username: postgres
       password: admin
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
+      show-sql: true
     open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -30,6 +35,9 @@ spring:
   web:
     resources:
       static-locations: classpath:/public/, classpath:/static/, classpath:/images/
+  mvc:
+    servlet:
+      load-on-startup: 1
 
 logging:
   level:
