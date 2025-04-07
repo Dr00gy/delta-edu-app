@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.edu_app.listener.AuditListener;
+import org.edu_app.listener.Auditable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,7 +34,7 @@ public class User {
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
 
-    @NotBlank(message = "role is mandatory")
+    @NotNull(message = "role is mandatory")
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -53,6 +54,16 @@ public class User {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
+
+
+    @Override
+    public void setOperation(String operation){
+        this.operation = operation;
+    }
+    @Override
+    public void setLastModified(String lastModified){
+        this.lastModified = lastModified;
+    }
 
 
 

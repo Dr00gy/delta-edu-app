@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.edu_app.listener.AuditListener;
+import org.edu_app.listener.Auditable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subjects")
-public class Subject {
+public class Subject implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +46,13 @@ public class Subject {
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
 
+
+    @Override
+    public void setOperation(String operation){
+        this.operation = operation;
+    }
+    @Override
+    public void setLastModified(String lastModified){
+        this.lastModified = lastModified;
+    }
 }

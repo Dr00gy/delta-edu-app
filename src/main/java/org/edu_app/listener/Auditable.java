@@ -1,4 +1,4 @@
-package org.edu_app.listener;
+package vpsi.kelvin.listener;
 
 public interface Auditable {
     void setOperation(String operation);

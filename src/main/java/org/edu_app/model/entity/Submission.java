@@ -3,17 +3,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.edu_app.listener.AuditListener;
+import org.edu_app.listener.Auditable;
 
 import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditListener.class)
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "submissions")
-public class Submission {
+public class Submission implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +40,13 @@ public class Submission {
 
     private String operation;
     private String lastModified;
+
+    @Override
+    public void setOperation(String operation){
+        this.operation = operation;
+    }
+    @Override
+    public void setLastModified(String lastModified){
+        this.lastModified = lastModified;
+    }
 }

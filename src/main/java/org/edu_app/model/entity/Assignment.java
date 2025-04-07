@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.edu_app.listener.AuditListener;
+import org.edu_app.listener.Auditable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "assignments")
-public class Assignment {
+public class Assignment implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +49,14 @@ public class Assignment {
     // Added relationships in last push
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Submission> submissions = new ArrayList<>();
+
+
+    @Override
+    public void setOperation(String operation){
+        this.operation = operation;
+    }
+    @Override
+    public void setLastModified(String lastModified){
+        this.lastModified = lastModified;
+    }
 }

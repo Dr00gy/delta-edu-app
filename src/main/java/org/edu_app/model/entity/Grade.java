@@ -1,11 +1,13 @@
 package org.edu_app.model.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.edu_app.listener.AuditListener;
+import org.edu_app.listener.Auditable;
 
 @Entity
 @EntityListeners(AuditListener.class)
@@ -14,7 +16,7 @@ import org.edu_app.listener.AuditListener;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "grades")
-public class Grade {
+public class Grade implements Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,4 +36,13 @@ public class Grade {
 
     private String operation;
     private String lastModified;
+
+    @Override
+    public void setOperation(String operation){
+        this.operation = operation;
+    }
+    @Override
+    public void setLastModified(String lastModified){
+        this.lastModified = lastModified;
+    }
 }

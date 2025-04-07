@@ -42,6 +42,11 @@ public class UploadController {
                 byte[] bytes = file.getBytes();
                 Path path = Paths.get(uploadDirectory + File.separator + file.getOriginalFilename());
                 Files.write(path, bytes);
+
+                //var json = convertMultipartFileToString(file);
+                //var submission = SerialzationManager.deserialize(json, SubmissionCreateDTO.class);
+
+                //Main.getDbManager().insertSubmission(submission);
             }
 
             model.addAttribute("success", "Files uploaded successfully!");
