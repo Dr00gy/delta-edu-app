@@ -20,6 +20,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") // For web functionality
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
+
 
     // Logging
     implementation("org.slf4j:slf4j-api:1.7.36")
@@ -43,6 +45,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    // Model
+    implementation ("org.modelmapper:modelmapper:3.1.1")
 
     // db
     implementation("org.postgresql:postgresql:42.7.5")

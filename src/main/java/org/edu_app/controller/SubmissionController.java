@@ -1,14 +1,14 @@
-package vpsi.kelvin.controller;
+package org.edu_app.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import vpsi.kelvin.model.dto.SubmissionCreateDTO;
-import vpsi.kelvin.model.dto.SubmissionDTO;
-import vpsi.kelvin.model.entity.Submission;
-import vpsi.kelvin.service.SubmissionService;
+import org.edu_app.model.dto.SubmissionCreateDTO;
+import org.edu_app.model.dto.SubmissionDTO;
+import org.edu_app.model.entity.Submission;
+import org.edu_app.service.SubmissionService;
 
 import java.util.List;
 

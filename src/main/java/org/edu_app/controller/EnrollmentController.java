@@ -1,14 +1,14 @@
-package vpsi.kelvin.controller;
+package org.edu_app.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import vpsi.kelvin.model.dto.EnrollmentCreateDTO;
-import vpsi.kelvin.model.dto.EnrollmentDTO;
-import vpsi.kelvin.model.entity.Enrollment;
-import vpsi.kelvin.service.EnrollmentService;
+import org.edu_app.model.dto.EnrollmentCreateDTO;
+import org.edu_app.model.dto.EnrollmentDTO;
+import org.edu_app.model.entity.Enrollment;
+import org.edu_app.service.EnrollmentService;
 
 import java.util.List;
 

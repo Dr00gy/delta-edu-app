@@ -1,4 +1,4 @@
-package vpsi.kelvin.controller;
+package org.edu_app.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -6,10 +6,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vpsi.kelvin.model.dto.UserCreateDTO;
-import vpsi.kelvin.model.dto.UserDTO;
-import vpsi.kelvin.model.entity.User;
-import vpsi.kelvin.service.UserService;
+import org.edu_app.model.dto.UserCreateDTO;
+import org.edu_app.model.dto.UserDTO;
+import org.edu_app.model.entity.User;
+import org.edu_app.service.UserService;
 
 
 import java.nio.file.AccessDeniedException;

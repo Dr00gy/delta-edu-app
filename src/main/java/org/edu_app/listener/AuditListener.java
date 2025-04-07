@@ -1,4 +1,4 @@
-package vpsi.kelvin.listener;
+package org.edu_app.listener;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreRemove;

@@ -1,22 +1,22 @@
-package vpsi.kelvin.configuration;
+package org.edu_app.configuration;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import vpsi.kelvin.model.dto.AssignmentDTO;
-import vpsi.kelvin.model.dto.EnrollmentDTO;
-import vpsi.kelvin.model.dto.GradeDTO;
-import vpsi.kelvin.model.dto.SubmissionDTO;
-import vpsi.kelvin.model.dto.UserDTO;
-import vpsi.kelvin.model.dto.SubjectDTO;
-import vpsi.kelvin.model.entity.Assignment;
-import vpsi.kelvin.model.entity.Enrollment;
-import vpsi.kelvin.model.entity.Grade;
-import vpsi.kelvin.model.entity.Submission;
-import vpsi.kelvin.model.entity.User;
-import vpsi.kelvin.model.entity.Subject;
+import org.edu_app.model.dto.AssignmentDTO;
+import org.edu_app.model.dto.EnrollmentDTO;
+import org.edu_app.model.dto.GradeDTO;
+import org.edu_app.model.dto.SubmissionDTO;
+import org.edu_app.model.dto.UserDTO;
+import org.edu_app.model.dto.SubjectDTO;
+import org.edu_app.model.entity.Assignment;
+import org.edu_app.model.entity.Enrollment;
+import org.edu_app.model.entity.Grade;
+import org.edu_app.model.entity.Submission;
+import org.edu_app.model.entity.User;
+import org.edu_app.model.entity.Subject;
 
 @Configuration
 public class ModelMapperConfiguration {

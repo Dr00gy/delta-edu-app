@@ -1,13 +1,13 @@
-package vpsi.kelvin.controller;
+package org.edu_app.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import vpsi.kelvin.model.dto.GradeDTO;
-import vpsi.kelvin.model.entity.Grade;
-import vpsi.kelvin.service.GradeService;
+import org.edu_app.model.dto.GradeDTO;
+import org.edu_app.model.entity.Grade;
+import org.edu_app.service.GradeService;
 
 import java.util.List;
 
