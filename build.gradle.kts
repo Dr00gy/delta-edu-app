@@ -27,8 +27,13 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging (should config logback)
 
-    // Jakarta
-    implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
+    // Jakarta, Hibernate and validators
+    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("jakarta.transaction:jakarta.transaction-api:2.0.0")
+    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+    implementation("org.hibernate:hibernate-core:5.6.9.Final")
+    implementation("org.glassfish:javax.el:3.0.0")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.24")
