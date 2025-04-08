@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class SubjectsController {
 
-    @GetMapping("/subjects")
+    @GetMapping("/subjects/temp")
     public String showSubjects(Model model) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

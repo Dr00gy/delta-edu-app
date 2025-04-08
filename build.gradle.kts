@@ -1,7 +1,7 @@
 plugins {
     id("java")
-    id("org.springframework.boot") version("2.7.8")
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("org.springframework.boot") version("3.2.5")
+    id("io.spring.dependency-management") version("1.1.4")
 }
 
 group = "org.edu_app"
@@ -20,27 +20,21 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") // For web functionality
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
-
-
-    // Logging
-    implementation("org.slf4j:slf4j-api:1.7.36")
-    implementation("org.springframework.boot:spring-boot-starter-logging") // For Spring logging (should config logback)
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
     // Jakarta, Hibernate and validators
+    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.0")
-    implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
-    implementation("org.hibernate:hibernate-core:5.6.9.Final")
-    implementation("org.glassfish:javax.el:3.0.0")
+    implementation("org.glassfish:jakarta.el:4.0.2")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 
     // Spring Boot dependencies BOM
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.8"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.4"))
 
     // Serialization
     implementation("com.google.code.gson:gson:2.12.1")

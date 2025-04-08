@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class AssignmentDetailsController { // In Figma, it is the Assignment details on the very right (not a popup anymore either)
 
-    @GetMapping("/asssignment")
+    @GetMapping("/assignment")
     public String showSubjectSubmissions(Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);

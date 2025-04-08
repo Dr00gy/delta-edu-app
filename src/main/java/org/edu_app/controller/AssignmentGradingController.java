@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class AssignmentGradingController { // In Figma, it is the individual Assignment grading on the very right bottom (not a popup anymore either)
 
-    @GetMapping("/asssignment")
+    @GetMapping("/assignment/grades")
     public String showSubjectSubmissions(Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
