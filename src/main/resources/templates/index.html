@@ -37,7 +37,7 @@
         <a href="grading">Grading</a>
       </nav>
 
-      <div class="content"> <!-- NOTE: Student view -->
+      <div class="content"> <!-- NOTE: Student view TODO: Teacher view -->
         <div id="db-div" class="container-sub">
           <h2>Your latest submissions:</h2>
           <table class="custom-table">
@@ -69,21 +69,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-status="excellent">
-                    <td>Boeing essay</td>
-                    <td>English 1</td>
-                    <td>1</td>
-                </tr>
-                <tr data-status="poor">
-                    <td>Project in Eclipse</td>
-                    <td>Java 2</td>
-                    <td>5</td>
+              <tr th:each="grade : ${grades}"
+              th:data-status="${grade.score >= 0.8 * grade.submission.assignment.maxPoints ? 'excellent' 
+                               : (grade.score &lt;= 0.2 * grade.submission.assignment.maxPoints ? 'poor' 
+                               : 'average')}">
+                  <td th:text="${grade.submission.assignment.name}">Assignment Name</td>
+                  <td th:text="${grade.submission.assignment.subject.name}">Course Name</td>
+                  <td th:text="${grade.score}">Grade</td>
                 </tr>
             </tbody>
         </table>
         </div>
 
-        <div id="db-div" class="container-exp">
+        <div id="db-div" class="container-exp"> <!-- TODO: Exports -->
           <h2>Your latest exports:</h2>
           <table class="custom-table">
             <thead>
@@ -93,14 +91,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
             </tbody>
         </table>
         </div>

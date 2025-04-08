@@ -57,4 +57,12 @@ public class SubjectService {
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
     }
+
+    public List<Subject> getSubjectsByStudentId(Long studentId) {
+        return subjectRepository.findSubjectsByStudentId(studentId);
+    }
+
+    public List<Subject> getSubjectsByTeacherId(Long teacherId) {
+        return subjectRepository.findSubjectsByTeacherId(teacherId);
+    }
 }

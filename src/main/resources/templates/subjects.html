@@ -38,7 +38,7 @@
 
       <div class="content">
         <div id="db-div" class="container-sub">
-          <h2>Your courses:</h2> <!-- NOTE: Student view -->
+          <h2>Your courses:</h2>
           <table class="custom-table">
             <thead>
                 <tr class="table-headers">
@@ -47,13 +47,35 @@
                     <th>Status:</th>
                 </tr>
             </thead>
-            <tbody> <!-- TODO: Make courses clickable to link on their page (and add pointer cursor in CSS) -->
-            <tr th:each="subject : ${subjects}">
-                <td><a th:href="@{/subjects/{id}(id=${subject.id})}" th:text="${subject.name}" class="subject-link">Subject Name</a></td>
+            <tbody>
+              <tr th:each="subject : ${subjects}" th:if="${role} == 'STUDENT'">
+                <td>
+                  <a th:href="@{/subjects/{id}(id=${subject.id})}"
+                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                </td>
                 <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
-                <td th:text="${subject.description}">Subject Description</td>
-            </tr>
+                <td>Enrolled</td> <!-- TODO: Change to missing or non missing deadlines like in Figma --> 
+              </tr>
+            
+              <tr th:each="subject : ${subjects}" th:if="${role} == 'TEACHER'">
+                <td>
+                  <a th:href="@{/subjects/{id}(id=${subject.id})}"
+                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                </td>
+                <td>You</td>
+                <td th:text="${subjectEnrollmentMap[subject.id]}">Enrollments</td> <!-- TODO: Link to and create student management page --> 
+              </tr>
+            
+              <tr th:each="subject : ${subjects}" th:if="${role} == 'ADMIN'">
+                <td>
+                  <a th:href="@{/subjects/{id}(id=${subject.id})}"
+                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                </td>
+                <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
+                <td th:text="${subjectEnrollmentMap[subject.id]}">Enrollments</td>
+              </tr>
             </tbody>
+            
         </table>
         </div>
 

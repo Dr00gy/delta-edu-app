@@ -4,8 +4,10 @@ import org.edu_app.model.dto.UserDTO;
 import org.edu_app.utils.CurrentUserUtils;
 import org.edu_app.utils.InitDBManager;
 import org.edu_app.model.entity.Submission;
+import org.edu_app.model.entity.Grade;
 import org.edu_app.model.entity.Role;
 import org.edu_app.service.SubmissionService;
+import org.edu_app.service.GradeService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,9 @@ public class DashboardController {
     private SubmissionService submissionService;
 
     @Autowired
+    private GradeService gradeService;
+
+    @Autowired
     CurrentUserUtils currentUserUtils;
 
     @GetMapping("/")
@@ -45,6 +50,9 @@ public class DashboardController {
             if (user.getRole() == Role.STUDENT) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
                 model.addAttribute("submissions", latestSubmissions);
+
+                List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
+                model.addAttribute("grades", latestGrades);
             }
         } else {
             model.addAttribute("name", "Unknown");

@@ -13,6 +13,8 @@ import org.edu_app.repository.SubjectRepository;
 import org.edu_app.repository.UserRepository;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +54,18 @@ public class EnrollmentService {
 
     public List<Enrollment> getAllEnrollments() {
         return enrollmentRepository.findAll();
+    }
+
+    public Map<Long, Long> getEnrollmentCountsBySubject() {
+        List<Object[]> results = enrollmentRepository.findEnrollmentCounts();
+
+        Map<Long, Long> subjectEnrollmentMap = new HashMap<>();
+        for (Object[] result : results) {
+            Long subjectId = (Long) result[0];
+            Long enrollmentCount = (Long) result[1];
+            subjectEnrollmentMap.put(subjectId, enrollmentCount);
+        }
+        return subjectEnrollmentMap;
     }
 }
 

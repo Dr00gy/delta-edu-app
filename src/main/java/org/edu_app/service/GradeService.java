@@ -66,4 +66,9 @@ public class GradeService {
                 .filter(grade -> grade.getTeacher().getId().equals(id))
                 .toList();
     }
+
+    public List<Grade> getLatestGradesByStudentId(Long studentId) {
+        return gradeRepository.findTop3ByStudentIdOrderByIdDesc(studentId);
+    }
+
 }

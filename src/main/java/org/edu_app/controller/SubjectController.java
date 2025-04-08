@@ -52,4 +52,21 @@ public class SubjectController {
                 .map(subject -> modelMapper.map(subject, SubjectDTO.class))
                 .toList();
     }
+
+    @GetMapping("/student/{studentId}/all")
+    public List<SubjectDTO> findSubjectsByStudentId(@PathVariable Long studentId) {
+        List<Subject> subjects = subjectService.getSubjectsByStudentId(studentId);
+        return subjects.stream()
+                .map(s -> modelMapper.map(s, SubjectDTO.class))
+                .toList();
+    }
+
+    @GetMapping("/teacher/{teacherId}/all")
+    public List<SubjectDTO> findSubjectsByTeacherId(@PathVariable Long teacherId) {
+        List<Subject> subjects = subjectService.getSubjectsByTeacherId(teacherId);
+        return subjects.stream()
+                .map(s -> modelMapper.map(s, SubjectDTO.class))
+                .toList();
+    }
+
 }

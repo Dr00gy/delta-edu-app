@@ -3,6 +3,7 @@ package org.edu_app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 import org.edu_app.model.entity.Enrollment;
 import org.edu_app.model.entity.Subject;
 import org.edu_app.model.entity.User;
@@ -16,4 +17,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     void deleteAllByStudent(User student);
 
     Optional<Enrollment> findBySubjectIdAndStudentId(Long subjectId, Long studentId);
+
+    @Query("SELECT e.subject.id, COUNT(DISTINCT e.student.id) FROM Enrollment e GROUP BY e.subject.id")
+    List<Object[]> findEnrollmentCounts();    
 }
