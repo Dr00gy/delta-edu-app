@@ -59,4 +59,11 @@ public class GradeService {
     public List<Grade> getAllGrades() {
         return gradeRepository.findAll();
     }
+
+    public List<Grade> getAllGradesByTeacherId(Long id) {
+        return gradeRepository.findAll()
+                .stream()
+                .filter(grade -> grade.getTeacher().getId().equals(id))
+                .toList();
+    }
 }

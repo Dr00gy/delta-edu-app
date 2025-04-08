@@ -48,16 +48,11 @@
                 </tr>
             </thead>
             <tbody> <!-- TODO: Make courses clickable to link on their page (and add pointer cursor in CSS) -->
-                <tr data-status="average">
-                    <td>English 1</td>
-                    <td>Anna Šmídková</td>
-                    <td>1 left</td>
-                </tr>
-                <tr data-status="excellent">
-                    <td>Java 2</td>
-                    <td>Martin Krucipísek</td>
-                    <td>All done</td>
-                </tr>
+            <tr th:each="subject : ${subjects}">
+                <td><a th:href="@{/subjects/{id}(id=${subject.id})}" th:text="${subject.name}" class="subject-link">Subject Name</a></td>
+                <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
+                <td th:text="${subject.description}">Subject Description</td>
+            </tr>
             </tbody>
         </table>
         </div>

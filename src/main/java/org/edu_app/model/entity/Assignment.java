@@ -39,6 +39,7 @@ public class Assignment implements Auditable {
     @NotNull(message = "Deadline is mandatory")
     private LocalDateTime deadline;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;

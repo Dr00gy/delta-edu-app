@@ -12,7 +12,7 @@
           <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
           <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
         </div>
-  
+
         <div class="header-actions">
           <button class="mode-toggle" onclick="toggleMode()">
             <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
@@ -47,15 +47,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-status="average">
-                    <td>Boeing essay</td>
-                    <td>English 1</td>
-                    <td>12.03.2025</td>
-                </tr>
-                <tr data-status="excellent">
-                    <td>Beyoncé essay</td>
-                    <td>English 1</td>
-                    <td>12.03.2025</td>
+            <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
+                    <td th:text="${submission.getAssignment().getName()}">Assignment</td>
+                    <td th:text="${submission.getAssignment().getSubject().getName()}">Course</td>
+                    <td th:text="${#temporals.format(submission.getSubmittedAt(), 'dd.MM.yyyy')}">SubmittedAt</td>
                 </tr>
             </tbody>
         </table>

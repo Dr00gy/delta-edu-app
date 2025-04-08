@@ -49,16 +49,12 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr data-status="excellent">
-                      <td>Boeing essay</td>
-                      <td>English 1</td>
-                      <td>1</td>
-                  </tr>
-                  <tr data-status="average">
-                      <td>Shrimps essay</td>
-                      <td>English 1</td>
-                      <td>3</td>
-                  </tr>
+                  <tr th:each="grade : ${grades}" th:data-status="${grade.getScore() >= 80 ? 'excellent' :
+                                     (grade.getScore() >= 40 ? 'average' : 'poor')}">
+                          <td th:text="${grade.getSubmission().getStudentComment()}">StudentComment</td>
+                          <td th:text="${grade.getSubmission().getAssignment().getSubject().getName()}">CourseName</td>
+                          <td th:text="${grade.getScore()}">Score</td>
+                      </tr>
               </tbody>
           </table>
           </div>
