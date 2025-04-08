@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/enrollments")
+@RequestMapping("/enrollment")
 @Tag(name = "enrollment", description = "Enrollment API")
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;

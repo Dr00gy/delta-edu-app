@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/subjects")
+@RequestMapping("/subject")
 @Tag(name = "subject", description = "Subject API")
 public class SubjectController {
 

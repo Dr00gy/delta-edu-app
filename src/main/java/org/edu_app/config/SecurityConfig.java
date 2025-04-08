@@ -51,7 +51,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Custom password encoder that applies the pepper
     public static class PepperedPasswordEncoder implements PasswordEncoder {
         private final BCryptPasswordEncoder delegate = new BCryptPasswordEncoder();
         private final String pepper;

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/grades")
+@RequestMapping("/grade")
 @Tag(name = "grade", description = "Grade API")
 public class GradeController {
 

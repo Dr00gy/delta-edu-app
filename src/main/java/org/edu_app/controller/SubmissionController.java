@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/submissions/skibidi")
+@RequestMapping("/submission")
 @Tag(name = "submission", description = "Submission API")
 public class SubmissionController {
 

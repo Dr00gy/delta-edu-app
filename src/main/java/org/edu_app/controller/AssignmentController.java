@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/assignments")
+@RequestMapping("/assignment")
 @Tag(name = "assignment", description = "Assignment API")
 public class AssignmentController {
 
