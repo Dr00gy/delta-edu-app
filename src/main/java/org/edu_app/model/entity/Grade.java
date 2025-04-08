@@ -33,8 +33,10 @@ public class Grade implements Auditable {
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;
 
-
+    @Transient
     private String operation;
+
+    @Transient
     private String lastModified;
 
     @Override

@@ -38,7 +38,10 @@ public class User implements Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Transient // makes JPA ignore columns
     private String operation;
+
+    @Transient
     private String lastModified;
 
 
@@ -55,11 +58,11 @@ public class User implements Auditable {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-
     @Override
     public void setOperation(String operation){
         this.operation = operation;
     }
+
     @Override
     public void setLastModified(String lastModified){
         this.lastModified = lastModified;

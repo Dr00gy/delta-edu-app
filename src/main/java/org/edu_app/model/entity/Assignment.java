@@ -43,7 +43,10 @@ public class Assignment implements Auditable {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    @Transient
     private String operation;
+
+    @Transient
     private String lastModified;
 
     // Added relationships in last push

@@ -27,8 +27,6 @@ public class SubmissionController {
         submissionService.addSubmission(submission);
     }
 
-
-
     // EDIT Komentáře od studenta
     @PutMapping("/update/{id}")
     public void updateSubmission(@PathVariable Long id, @RequestBody SubmissionDTO submissionDTO) {
@@ -69,5 +67,14 @@ public class SubmissionController {
                 .map(s -> modelMapper.map(s, SubmissionDTO.class))
                 .toList();
     }
+
+    @GetMapping("/student/{studentId}/latest")
+    public List<SubmissionDTO> getLatestSubmissionsByStudent(@PathVariable Long studentId) {
+        List<Submission> submissions = submissionService.getLatestSubmissionsByStudent(studentId);
+        return submissions.stream()
+                .map(s -> modelMapper.map(s, SubmissionDTO.class))
+                .toList();
+    }
+
 
 }

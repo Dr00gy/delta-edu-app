@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.edu_app.model.entity.Submission;
 import org.edu_app.repository.SubmissionRepository;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Component
 @RequiredArgsConstructor
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
@@ -55,5 +57,9 @@ public class SubmissionService {
 
     public List<Submission> getAllSubmissions() {
         return submissionRepository.findAll();
+    }
+
+    public List<Submission> getLatestSubmissionsByStudent(Long studentId) {
+        return submissionRepository.findTop3ByStudentIdOrderBySubmittedAtDesc(studentId);
     }
 }

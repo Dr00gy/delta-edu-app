@@ -38,13 +38,17 @@ public class Submission implements Auditable {
     @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
+    @Transient // fixes sql errors for getting latest submissions
     private String operation;
+
+    @Transient
     private String lastModified;
 
     @Override
     public void setOperation(String operation){
         this.operation = operation;
     }
+
     @Override
     public void setLastModified(String lastModified){
         this.lastModified = lastModified;

@@ -49,15 +49,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Boeing essay</td>
-                    <td>English 1</td>
-                    <td>12.03.2025</td>
-                </tr>
-                <tr>
-                    <td>Beyoncé essay</td>
-                    <td>English 1</td>
-                    <td>12.03.2025</td>
+                <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
+                    <td th:text="${submission.assignment.name}">Assignment Name</td> 
+                    <td th:text="${submission.assignment.subject.name}">Subject Name</td>
+                    <td th:text="${#temporals.format(submission.submittedAt, 'dd.MM.yyyy')}">Submission Date</td>
                 </tr>
             </tbody>
         </table>
