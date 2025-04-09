@@ -15,10 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
-public class ViewAndExportController {
+public class ViewController {
 
-    @GetMapping("/viewAndExport")
+    @GetMapping("/view")
     public String showUploadedFile() {
-        return "viewAndExport";
+        return "view";
     }
 }
