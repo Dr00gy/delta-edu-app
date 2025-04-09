@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-public class GradingStudentsController { // In Figma, it is the bottom right overview of students to be graded for an assignment
+public class GradingStudentsController { // TODO: In Figma, it is the bottom right overview of students to be graded for an assignment
 
     @GetMapping("/grading/assignment")
     public String showSubjectSubmissions(Model model) {

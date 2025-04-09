@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-public class AssignmentGradingController { // In Figma, it is the individual Assignment grading on the very right bottom (not a popup anymore either)
+public class AssignmentGradingController { // TODO: In Figma, it is the individual Assignment grading on the very right bottom (not a popup anymore either)
 
     @GetMapping("/assignments/grades")
     public String showSubjectSubmissions(Model model) {

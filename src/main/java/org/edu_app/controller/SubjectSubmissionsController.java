@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-public class SubjectSubmissionsController { // In Figma, it is the individual English 1 page with submissions statuses on the left
+public class SubjectSubmissionsController { // TODO: In Figma, it is the individual English 1 page with submissions statuses on the left
 
     @GetMapping("/submissions/subject")
     public String showSubjectSubmissions(Model model) {

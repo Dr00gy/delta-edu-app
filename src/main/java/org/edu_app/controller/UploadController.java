@@ -130,7 +130,7 @@ public class UploadController {
                 submission.setStudentComment(studentComment);
                 submission.setSubmittedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
-                // ✅ Save to get submission ID
+                // Save to get submission ID
                 submissionService.addSubmission(submission); // must return the persisted entity with ID
 
                 Long submissionId = submission.getId();
@@ -142,7 +142,7 @@ public class UploadController {
                     submissionId
                 );
 
-                // ✅ Preserve extension
+                // Preserve extension
                 String originalName = file.getOriginalFilename();
                 String extension = "";
                 if (originalName != null && originalName.contains(".")) {
@@ -153,7 +153,7 @@ public class UploadController {
                 Path filePath = Paths.get(uploadDirectory + File.separator + finalFileName);
                 Files.write(filePath, file.getBytes());
 
-                // ✅ (Optional) Save file path to submission if needed
+                // (WE ARE NOT GOING TO BE DOING THIS but for reference) Save file path to submission if needed
                 // submission.setFilePath(finalFileName);
                 // submissionService.updateSubmission(submission);
             }

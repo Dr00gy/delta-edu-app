@@ -55,7 +55,7 @@ public String showHome(Model model) {
             List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
             model.addAttribute("grades", latestGrades);
         } 
-        else if (user.getRole() == Role.TEACHER) { // TODO: For teacher and admin, listen for last graded submissions and create queries to put the grades here
+        else if (user.getRole() == Role.TEACHER) { // TODO: For teacher and admin, listen (src for this in listener folder) for last graded submissions and create queries to put the grades here (use Claude if ur gonna use LLM)
             // Get latest submissions for subjects taught by this teacher
             List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
             model.addAttribute("submissions", latestSubmissions);
