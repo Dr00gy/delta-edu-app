@@ -31,56 +31,73 @@
           <a href="/">Dashboard</a>
           <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
           <a href="subjects">Subjects</a>
-          <!-- For students, a view of their homework and projects listed by course. For teachers, student works listed by course. -->
+          <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
           <a href="submissions">Submissions</a>
-          <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
+          <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
           <a href="grading">Grading</a>
         </nav>
   
-        <div class="content"> <!-- NOTE: Student view -->
+        <div class="content">
           <div id="db-div" class="container-sub">
-            <h2>Your latest grades:</h2>
+            <h2>Your grades:</h2>
             <table class="custom-table">
               <thead>
                   <tr class="table-headers">
-                      <th>Assignment:</th>
-                      <th>Course:</th>
+                      <th>Submission desc:</th>
+                      <th>Subject:</th>
                       <th>Grade:</th>
                   </tr>
               </thead>
               <tbody>
-                  <tr th:each="grade : ${grades}" th:data-status="${grade.getScore() >= 80 ? 'excellent' :
-                                     (grade.getScore() >= 40 ? 'average' : 'poor')}">
-                          <td th:text="${grade.getSubmission().getStudentComment()}">StudentComment</td>
-                          <td th:text="${grade.getSubmission().getAssignment().getSubject().getName()}">CourseName</td>
+                  <tr th:each="grade : ${grades}" th:data-status="${grade.score >= 0.8 * grade.submission.assignment.maxPoints ? 'excellent' 
+                    : (grade.score &lt;= 0.2 * grade.submission.assignment.maxPoints ? 'poor' 
+                    : 'average')}">
+                          <td th:text="${grade.getSubmission().getStudentComment()}">Student comment</td>
+                          <td th:text="${grade.getSubmission().getAssignment().getSubject().getName()}">Subject name</td>
                           <td th:text="${grade.getScore()}">Score</td>
                       </tr>
               </tbody>
           </table>
           </div>
   
+          <!-- For the second table (averages for students, ungraded submissions for teachers) -->
           <div id="db-div" class="container-exp">
-            <h2>Your avg. scores:</h2>
-            <table class="custom-table">
+            <h2 th:if="${role.name() == 'STUDENT'}">Your avg. scores:</h2>
+            <h2 th:if="${role.name() == 'TEACHER'}">Ungraded submissions:</h2>
+            
+            <!-- For STUDENT role -->
+            <table th:if="${role.name() == 'STUDENT'}" class="custom-table">
               <thead>
-                  <tr class="table-headers">
-                      <th>Course:</th>
-                      <th>Avg:</th>
-                  </tr>
+                <tr class="table-headers">
+                  <th>Subject:</th>
+                  <th>Avg %:</th>
+                </tr>
               </thead>
-              <tbody> <!-- TODO: Cacl averages -->
-                  <tr data-status="excellent">
-                      <td>English 1</td>
-                      <td>1</td>
-                  </tr>
-                  <tr data-status="poor">
-                      <td>Java 2</td>
-                      <td>4.2</td>
-                  </tr>
+              <tbody>
+                <tr th:each="average : ${averages}" th:data-status="${average.averagePercentage >= 80 ? 'excellent' :
+                          (average.averagePercentage >= 40 ? 'average' : 'poor')}">
+                  <td th:text="${average.subjectName}">Subject Name</td>
+                  <td th:text="${#numbers.formatDecimal(average.averagePercentage, 1, 1)}">Average</td>
+                </tr>
               </tbody>
-          </table>
+            </table>
+            
+            <!-- For TEACHER role, you need to upload an assignment as a student to see a record -->
+            <table th:if="${role.name() == 'TEACHER'}" class="custom-table">
+              <thead>
+                <tr class="table-headers">
+                  <th>Assignment:</th>
+                  <th>Subject:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="submission : ${ungradedSubmissions}">
+                  <td th:text="${submission.assignment.name}">Assignment Name</td>
+                  <td th:text="${submission.assignment.subject.name}">Subject Name</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
   
       </div>
       <script th:src="@{/js/script.js}"></script>

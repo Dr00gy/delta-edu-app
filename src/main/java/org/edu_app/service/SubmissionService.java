@@ -9,6 +9,7 @@ import org.edu_app.model.entity.Submission;
 import org.edu_app.repository.SubmissionRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class SubmissionService {
                 .orElseThrow(() -> new EntityNotFoundException("Submission with id " + submissionId + " not found"));
 
         existingSubmission.setStudentComment(submission.getStudentComment());
-        existingSubmission.setSubmittedAt(LocalDateTime.now());
+        existingSubmission.setSubmittedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
         submissionRepository.save(existingSubmission);
     }
@@ -40,7 +41,6 @@ public class SubmissionService {
                 .orElseThrow(() -> new EntityNotFoundException("Submission with id " + submissionId + " not found"));
         submissionRepository.delete(submission);
     }
-
 
     public Submission getSubmission(Long id) {
         return submissionRepository.findById(id)
@@ -61,5 +61,17 @@ public class SubmissionService {
 
     public List<Submission> getLatestSubmissionsByStudent(Long studentId) {
         return submissionRepository.findTop3ByStudentIdOrderBySubmittedAtDesc(studentId);
+    }
+
+    public List<Submission> getLatestSubmissionsByTeacher(Long teacherId) {
+        return submissionRepository.findTop3ByAssignment_Subject_TeacherIdOrderBySubmittedAtDesc(teacherId);
+    }
+
+    public List<Submission> getLatestSubmissions() {
+        return submissionRepository.findTop3ByOrderBySubmittedAtDesc();
+    }
+
+    public List<Submission> getSubmissionsByTeacher(Long teacherId) {
+    return submissionRepository.findByAssignment_Subject_TeacherId(teacherId);
     }
 }

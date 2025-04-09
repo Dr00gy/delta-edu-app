@@ -19,5 +19,10 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     Optional<Enrollment> findBySubjectIdAndStudentId(Long subjectId, Long studentId);
 
     @Query("SELECT e.subject.id, COUNT(DISTINCT e.student.id) FROM Enrollment e GROUP BY e.subject.id")
-    List<Object[]> findEnrollmentCounts();    
+    List<Object[]> findEnrollmentCounts();
+
+    boolean existsByStudentIdAndSubjectId(Long studentId, Long subjectId);
+    
+    @Query("SELECT e.subject.id FROM Enrollment e WHERE e.student.id = :studentId")
+    List<Long> findSubjectIdsByStudentId(Long studentId);
 }

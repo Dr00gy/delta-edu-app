@@ -35,8 +35,8 @@ INSERT INTO submissions (submitted_at, student_comment, student_id, assignment_i
 
 INSERT INTO grades (score, feedback, submission_id, teacher_id) VALUES
 (95, 'Excellent work!', 1, 2),
-(88, 'Good thinking', 2, 3),
-(79, 'Could be simpler', 3, 3),
-(91, 'Very well', 4, 2),
-(82, 'Great analysis', 5, 2),
-(85, 'Solid understanding', 6, 3);
+(38, 'Good thinking', 2, 3),
+(35, 'Could be simpler', 3, 3),
+(59, 'Very well', 4, 2),
+(50, 'Great analysis', 5, 2),
+(80, 'Solid understanding', 6, 3);

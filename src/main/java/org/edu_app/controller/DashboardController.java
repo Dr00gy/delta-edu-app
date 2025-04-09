@@ -34,33 +34,47 @@ public class DashboardController {
     @Autowired
     CurrentUserUtils currentUserUtils;
 
-    @GetMapping("/")
-    public String showHome(Model model) {
-        // Get authenticated user email
-        var user = currentUserUtils.get();
+@GetMapping("/")
+public String showHome(Model model) {
+    // Get authenticated user
+    var user = currentUserUtils.get();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String formattedDate = LocalDate.now().format(formatter);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    String formattedDate = LocalDate.now().format(formatter);
 
-        // Add attributes to model from userDetails
-        if (user != null) {
-            model.addAttribute("name", user.getFirstName());
-            model.addAttribute("role", user.getRole());
+    // Add attributes to model from userDetails
+    if (user != null) {
+        model.addAttribute("name", user.getFirstName());
+        model.addAttribute("role", user.getRole());
 
-            if (user.getRole() == Role.STUDENT) {
-                List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
-                model.addAttribute("submissions", latestSubmissions);
+        // Different views based on role
+        if (user.getRole() == Role.STUDENT) {
+            List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
+            model.addAttribute("submissions", latestSubmissions);
 
-                List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
-                model.addAttribute("grades", latestGrades);
-            }
-        } else {
-            model.addAttribute("name", "Unknown");
-            model.addAttribute("role", "Unknown");
-            model.addAttribute("submissions", List.of());
+            List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
+            model.addAttribute("grades", latestGrades);
+        } 
+        else if (user.getRole() == Role.TEACHER) { // TODO: For teacher and admin, listen for last graded submissions and create queries to put the grades here
+            // Get latest submissions for subjects taught by this teacher
+            List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
+            model.addAttribute("submissions", latestSubmissions);
+            model.addAttribute("grades", List.of()); // Empty list for now
+        } 
+        else if (user.getRole() == Role.ADMIN) {
+            // Get latest submissions across all subjects
+            List<Submission> latestSubmissions = submissionService.getLatestSubmissions();
+            model.addAttribute("submissions", latestSubmissions);
+            model.addAttribute("grades", List.of()); // Empty list for now
         }
-        model.addAttribute("date", formattedDate);
-
-        return "index";
+    } else {
+        model.addAttribute("name", "Unknown");
+        model.addAttribute("role", "Unknown");
+        model.addAttribute("submissions", List.of());
+        model.addAttribute("grades", List.of());
     }
+    model.addAttribute("date", formattedDate);
+
+    return "index";
+}
 }

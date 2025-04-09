@@ -52,5 +52,9 @@ public class AssignmentService {
     public List<Assignment> getAllAssignments() {
         return assignmentRepository.findAll();
     }
+
+    public List<Assignment> getAssignmentsBySubjectIds(List<Long> subjectIds) {
+        return assignmentRepository.findBySubjectIdIn(subjectIds);
+    }
 }
 

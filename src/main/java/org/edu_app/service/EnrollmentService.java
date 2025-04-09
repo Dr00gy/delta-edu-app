@@ -67,5 +67,13 @@ public class EnrollmentService {
         }
         return subjectEnrollmentMap;
     }
+
+    public boolean isStudentEnrolledInSubject(Long studentId, Long subjectId) {
+        return enrollmentRepository.existsByStudentIdAndSubjectId(studentId, subjectId);
+    }
+    
+    public List<Long> getEnrolledSubjectIds(Long studentId) {
+        return enrollmentRepository.findSubjectIdsByStudentId(studentId);
+    }
 }
 

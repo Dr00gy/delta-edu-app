@@ -75,3 +75,70 @@ input[type="file"] {
         width: 100%;
     }
 }
+
+/* Style for select dropdown */
+select {
+    width: 60%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    appearance: none; /* removes default styling in some browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-top: 8px;
+}
+
+/* Optional: custom arrow for select */
+select:focus {
+    border-color: #888;
+    outline: none;
+}
+
+/* Style for text area */
+textarea {
+    width: 60%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* user can resize vertically */
+    margin-top: 8px;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+}
+
+textarea:focus {
+    border-color: #888;
+    outline: none;
+}
+
+/* Center contents inside form-group */
+.form-group {
+    margin: 20px auto;
+    text-align: left;
+    width: 80%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+}
+
+/* Optional: If file name text wraps, keep it readable */
+#file-names {
+    margin-top: 8px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.custom-file-upload {
+    margin-bottom: 10px;
+}

@@ -36,8 +36,7 @@ public class SubmissionsController {
         var id = user.getId();
         var submissions = switch (user.getRole()) {
             case STUDENT -> submissionService.getSubmissionsByStudent(id);
-            // todo - add a case for teacher
-            case TEACHER -> submissionService.getSubmissionsByStudent(id);
+            case TEACHER -> submissionService.getSubmissionsByTeacher(id);
             case ADMIN -> submissionService.getAllSubmissions();
         };
 

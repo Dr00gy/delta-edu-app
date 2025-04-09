@@ -2,36 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/stylesUpload.css}">
-    <title>File Upload</title>
+    <title>Submit Assignment</title>
 </head>
 <body>
-    <h1>Upload Files</h1>
-
+    <h1>Upload Submission</h1>
+    
+    <!-- Success message -->
+    <div th:if="${success}" class="message success">
+        <p th:text="${success}"></p>
+    </div>
+    
+    <!-- Error message -->
+    <div th:if="${error}" class="message error">
+        <p th:text="${error}"></p>
+    </div>
+    
     <form method="post" enctype="multipart/form-data" th:action="@{/upload}">
-        <label for="file-upload" class="custom-file-upload">Choose File</label>
-        <input id="file-upload" type="file" name="files" multiple onchange="displayFileNames()"/>
-        <span id="file-names">No files chosen!</span>
+        <div class="form-group">
+            <label for="assignmentId">Select Assignment:</label>
+            <select id="assignmentId" name="assignmentId" required>
+                <option value="">-- Select an assignment --</option>
+                <option th:each="assignment : ${assignments}" 
+                        th:value="${assignment.id}" 
+                        th:text="${assignment.subject.name + ' - ' + assignment.name}">
+                </option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="file-upload" class="custom-file-upload">Choose Files</label>
+            <input id="file-upload" type="file" name="files" multiple onchange="displayFileNames()"/>
+            <span id="file-names">No files chosen!</span>
+        </div>
+        
+        <div class="form-group">
+            <label for="studentComment">Comment (optional, but recommended):</label>
+            <textarea id="studentComment" name="studentComment" rows="4"></textarea>
+        </div>
+        
         <button type="submit">Upload</button>
     </form>
-
-    <div th:if="${message != null}">
-        <p th:text="${message}"></p>
-    </div>
-
-    <div th:if="${filename != null}">
-        <img th:src="@{/files/{fileName}(fileName=${fileName})}" alt="Uploaded File" />
-    </div>
-
-        <!-- Success message -->
-        <div th:if="${success}" class="message success">
-            <p th:text="${success}"></p>
-        </div>
     
-        <!-- Error message -->
-        <div th:if="${error}" class="message error">
-            <p th:text="${error}"></p>
-        </div>
-    <script th:src="@{/js/scriptUpload.js}"></script>
-
+    <script>
+        function displayFileNames() {
+            const fileInput = document.getElementById('file-upload');
+            const fileNameSpan = document.getElementById('file-names');
+            
+            if (fileInput.files.length > 0) {
+                if (fileInput.files.length === 1) {
+                    fileNameSpan.textContent = fileInput.files[0].name;
+                } else {
+                    fileNameSpan.textContent = fileInput.files.length + ' files selected';
+                }
+            } else {
+                fileNameSpan.textContent = 'No files chosen!';
+            }
+        }
+    </script>
 </body>
 </html>

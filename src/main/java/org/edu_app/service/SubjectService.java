@@ -65,4 +65,5 @@ public class SubjectService {
     public List<Subject> getSubjectsByTeacherId(Long teacherId) {
         return subjectRepository.findSubjectsByTeacherId(teacherId);
     }
+
 }

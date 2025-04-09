@@ -42,7 +42,6 @@ public class UserService {
     }
 
     @Transactional
-
     public void updateUser(Long userId, User user){
         User user1 = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found"));
         user1.setEmail(user.getEmail());
@@ -66,7 +65,6 @@ public class UserService {
         return enrollment.getStudent();
     }
 
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -77,5 +75,10 @@ public class UserService {
 
     public List<User> getAllTeachers() {
         return userRepository.findByRole(Role.valueOf("TEACHER"));
+    }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found"));
     }
 }

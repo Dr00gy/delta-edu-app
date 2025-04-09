@@ -28,29 +28,42 @@ public class GradingController {
     @Autowired
     CurrentUserUtils currentUserUtils;
 
-    @GetMapping("/grading")
-    public String grading(Model model) { // NOTE: See SubjectsController for TODOs that also apply to Gradings
-        var user = currentUserUtils.get();
+@GetMapping("/grading")
+public String grading(Model model) {
+    var user = currentUserUtils.get();
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    String formattedDate = LocalDate.now().format(formatter);
 
+    model.addAttribute("name", user.getFirstName());
+    model.addAttribute("date", formattedDate);
+    model.addAttribute("role", user.getRole());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String formattedDate = LocalDate.now().format(formatter);
+    var id = user.getId();
+    
+    // Set up grades table (main table)
+    var grades = switch (user.getRole()) {
+        case STUDENT -> gradeService.getAllGradesByStudentId(id);
+        case TEACHER -> gradeService.getAllGradesByTeacherId(id);
+        case ADMIN -> gradeService.getAllGrades();
+    };
+    model.addAttribute("grades", grades);
+    
+    // Set up secondary table (averages for students, ungraded submissions for teachers)
+    switch (user.getRole()) {
+        case STUDENT:
+            var studentAverages = gradeService.calculateStudentAveragesBySubject(id);
+            model.addAttribute("averages", studentAverages);
+            break;
+        case TEACHER:
+            var ungradedSubmissions = gradeService.getUngradedSubmissionsByTeacherId(id);
+            model.addAttribute("ungradedSubmissions", ungradedSubmissions);
+            break;
+        case ADMIN:
+            // No special handling needed for admin
+            break;
+    }
 
-        model.addAttribute("name", user.getFirstName());
-        model.addAttribute("date", formattedDate);
-        model.addAttribute("role", user.getRole());
-
-        var id = user.getId();
-        var grades = switch (user.getRole()) {
-            // todo - add a case for student
-            case STUDENT -> gradeService.getAllGradesByTeacherId(id);
-            case TEACHER -> gradeService.getAllGradesByTeacherId(id);
-            case ADMIN -> gradeService.getAllGrades();
-        };
-
-        model.addAttribute("grades", grades);
-
-        return "grading";
+    return "grading";
     }
 }
