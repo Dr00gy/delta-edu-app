@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -118,12 +119,19 @@ public class UploadController {
                 }
             }
 
+            // Ensure the upload directory exists
             File directory = new File(uploadDirectory);
-            if (!directory.exists()) directory.mkdirs();
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
 
             User student = userService.getUserById(currentUser.getId());
 
             for (MultipartFile file : files) {
+                if (file.isEmpty()) {
+                    continue; // Skip empty files
+                }
+                
                 Submission submission = new Submission();
                 submission.setStudent(student);
                 submission.setAssignment(assignment);
@@ -131,31 +139,32 @@ public class UploadController {
                 submission.setSubmittedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
                 // Save to get submission ID
-                submissionService.addSubmission(submission); // must return the persisted entity with ID
+                submissionService.addSubmission(submission);
 
                 Long submissionId = submission.getId();
 
-                String newFileName = String.format(
-                    "%05dass_%05dstud_%05dsub", 
-                    assignment.getId(), 
-                    student.getId(), 
-                    submissionId
-                );
-
-                // Preserve extension
-                String originalName = file.getOriginalFilename();
+                // Get original filename and extension
+                String originalFilename = file.getOriginalFilename();
                 String extension = "";
-                if (originalName != null && originalName.contains(".")) {
-                    extension = originalName.substring(originalName.lastIndexOf('.'));
+                
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
                 }
 
-                String finalFileName = newFileName + extension;
-                Path filePath = Paths.get(uploadDirectory + File.separator + finalFileName);
-                Files.write(filePath, file.getBytes());
+                // Create the new filename with the correct pattern and extension
+                String newFileName = String.format(
+                    "%05dass_%05dstud_%05dsub%s", 
+                    assignment.getId(), 
+                    student.getId(), 
+                    submissionId,
+                    extension
+                );
 
-                // (WE ARE NOT GOING TO BE DOING THIS but for reference) Save file path to submission if needed
-                // submission.setFilePath(finalFileName);
-                // submissionService.updateSubmission(submission);
+                // Create the full path
+                Path targetPath = Paths.get(uploadDirectory, newFileName);
+                
+                // Copy the file to the target location (replacing existing file with the same name)
+                Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
             }
 
             model.addAttribute("success", "Files uploaded successfully!");

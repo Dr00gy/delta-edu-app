@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/stylesUpload.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stylesExport.css}">
     <title>Export</title>
 </head>
 <body>
     <h1>Export</h1>
 
+    <button onclick="window.location.href='/export/grades'">Download Grades (JSON)</button>
+    <button onclick="window.location.href='/export/files'">Download Submitted Files (ZIP)</button>
 
-    <script th:src="@{/js/scriptUpload.js}"></script>
+    <script th:src="@{/js/scriptExport.js}"></script>
 </body>
 </html>
