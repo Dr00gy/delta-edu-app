@@ -47,14 +47,20 @@
                     <th>Status:</th>
                 </tr>
             </thead>
-            <tbody>
-              <tr th:each="subject : ${subjects}" th:if="${role} == 'STUDENT'">
+            <tbody> <!-- TODO: Fix this not rendering properly since this commit --> 
+              <tr th:each="subject : ${subjects}" th:if="${role} == 'STUDENT'" 
+                  th:with="status=${subjectStatusMap[subject.id].status}"
+                  th:data-status="${status}">
                 <td>
                   <a th:href="@{/subjects/{id}(id=${subject.id})}"
-                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                    th:text="${subject.name}" class="subject-link">Subject Name</a>
                 </td>
                 <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
-                <td>Enrolled</td> <!-- TODO: Change to missing or non missing deadlines like in Figma --> 
+                <td th:with="count=${subjectStatusMap[subject.id].missingCount}">
+                  <span th:if="${count == 0}">All assignments submitted</span>
+                  <span th:if="${count == 1}">1 missing assignment</span>
+                  <span th:if="${count > 1}" th:text="${count} + ' missing assignments'">Missing assignments</span>
+                </td>
               </tr>
             
               <tr th:each="subject : ${subjects}" th:if="${role} == 'TEACHER'">
