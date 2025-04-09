@@ -1,6 +1,8 @@
 package org.edu_app.controller;
 
 import org.edu_app.model.dto.UserDTO;
+import org.edu_app.service.ExportLogService;
+import org.edu_app.service.ExportLogService.ExportRecord;
 import org.edu_app.utils.CurrentUserUtils;
 import org.edu_app.utils.InitDBManager;
 import org.edu_app.model.entity.Submission;
@@ -32,49 +34,57 @@ public class DashboardController {
     private GradeService gradeService;
 
     @Autowired
+    private ExportLogService exportLogService;
+
+    @Autowired
     CurrentUserUtils currentUserUtils;
 
-@GetMapping("/")
-public String showHome(Model model) {
-    // Get authenticated user
-    var user = currentUserUtils.get();
+    @GetMapping("/")
+    public String showHome(Model model) {
+        // Get authenticated user
+        var user = currentUserUtils.get();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    String formattedDate = LocalDate.now().format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
 
-    // Add attributes to model from userDetails
-    if (user != null) {
-        model.addAttribute("name", user.getFirstName());
-        model.addAttribute("role", user.getRole());
+        // Add attributes to model from userDetails
+        if (user != null) {
+            model.addAttribute("name", user.getFirstName());
+            model.addAttribute("role", user.getRole());
 
-        // Different views based on role
-        if (user.getRole() == Role.STUDENT) {
-            List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
-            model.addAttribute("submissions", latestSubmissions);
+            // Different views based on role
+            if (user.getRole() == Role.STUDENT) {
+                List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
+                model.addAttribute("submissions", latestSubmissions);
 
-            List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
-            model.addAttribute("grades", latestGrades);
-        } 
-        else if (user.getRole() == Role.TEACHER) { // TODO: For teacher and admin, listen (src for this in listener folder) for last graded submissions and create queries to put the grades here (use Claude if ur gonna use LLM)
-            // Get latest submissions for subjects taught by this teacher
-            List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
-            model.addAttribute("submissions", latestSubmissions);
-            model.addAttribute("grades", List.of()); // Empty list for now
-        } 
-        else if (user.getRole() == Role.ADMIN) {
-            // Get latest submissions across all subjects
-            List<Submission> latestSubmissions = submissionService.getLatestSubmissions();
-            model.addAttribute("submissions", latestSubmissions);
-            model.addAttribute("grades", List.of()); // Empty list for now
+                List<Grade> latestGrades = gradeService.getLatestGradesByStudentId(user.getId());
+                model.addAttribute("grades", latestGrades);
+            } 
+            else if (user.getRole() == Role.TEACHER) {
+                // Get latest submissions for subjects taught by this teacher
+                List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
+                model.addAttribute("submissions", latestSubmissions);
+                model.addAttribute("grades", List.of()); // Empty list for now
+            } 
+            else if (user.getRole() == Role.ADMIN) {
+                // Get latest submissions across all subjects
+                List<Submission> latestSubmissions = submissionService.getLatestSubmissions();
+                model.addAttribute("submissions", latestSubmissions);
+                model.addAttribute("grades", List.of()); // Empty list for now
+            }
+            
+            // Add latest exports for all user types
+            List<ExportRecord> latestExports = exportLogService.getLatestExportsByUser(user.getId(), 5);
+            model.addAttribute("exports", latestExports);
+        } else {
+            model.addAttribute("name", "Unknown");
+            model.addAttribute("role", "Unknown");
+            model.addAttribute("submissions", List.of());
+            model.addAttribute("grades", List.of());
+            model.addAttribute("exports", List.of());
         }
-    } else {
-        model.addAttribute("name", "Unknown");
-        model.addAttribute("role", "Unknown");
-        model.addAttribute("submissions", List.of());
-        model.addAttribute("grades", List.of());
-    }
-    model.addAttribute("date", formattedDate);
+        model.addAttribute("date", formattedDate);
 
-    return "index";
-}
+        return "index";
+    }
 }

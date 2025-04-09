@@ -8,6 +8,7 @@ import org.edu_app.model.entity.Subject;
 import org.edu_app.service.GradeService;
 import org.edu_app.service.SubjectService;
 import org.edu_app.utils.CurrentUserUtils;
+import org.edu_app.utils.ExportLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,7 @@ public class ExportController {
     private final GradeService gradeService;
     private final CurrentUserUtils currentUserUtils;
     private final SubjectService subjectService;
+    private final ExportLogger exportLogger;
 
     @Value("${spring.upload.directory}")
     private String uploadDirectory;
@@ -65,6 +67,9 @@ public class ExportController {
                 record.put("student", grade.getSubmission().getStudent().getFirstName() + " " + grade.getSubmission().getStudent().getLastName());
                 exportData.add(record);
             }
+
+            // Log the export
+            exportLogger.logExport(user.getId(), "grades", null, null);
 
             ObjectMapper objectMapper = new ObjectMapper();
             byte[] jsonBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(exportData);
@@ -106,6 +111,9 @@ public class ExportController {
                 }
             }
             
+            // Log the export
+            exportLogger.logExport(user.getId(), "files", null, null);
+            
             // Create resource from the temp file
             InputStream inputStream = new FileInputStream(tempFile.toFile());
             InputStreamResource resource = new InputStreamResource(inputStream);
@@ -123,7 +131,9 @@ public class ExportController {
         }
     }
     
+    // Rest of the ExportController remains the same...
     private List<File> filterFilesByUserRole(File[] files, UserDTO user) {
+        // Same implementation as before
         List<File> filteredFiles = new ArrayList<>();
         
         if (user.getRole() == Role.ADMIN) {
@@ -159,7 +169,7 @@ public class ExportController {
     }
     
     private boolean matchesAssignmentIds(String fileName, List<Long> assignmentIds) {
-        // Format is xxxxxass_xxxxxstud_xxxxxsub.extension
+        // Same implementation as before
         String[] parts = fileName.split("_");
         if (parts.length >= 1) {
             String assignmentPart = parts[0];
@@ -174,7 +184,7 @@ public class ExportController {
     }
     
     private boolean matchesStudentId(String fileName, Long studentId) {
-        // Format is xxxxxass_xxxxxstud_xxxxxsub.extension
+        // Same implementation as before
         String[] parts = fileName.split("_");
         if (parts.length >= 2) {
             String studentPart = parts[1];
@@ -189,6 +199,7 @@ public class ExportController {
     }
     
     private void addFileToZip(File file, String fileName, ZipOutputStream zipOut) throws IOException {
+        // Same implementation as before
         FileInputStream fis = new FileInputStream(file);
         ZipEntry zipEntry = new ZipEntry(fileName);
         zipOut.putNextEntry(zipEntry);

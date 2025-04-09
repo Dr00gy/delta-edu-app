@@ -81,20 +81,25 @@
         </table>
         </div>
 
-        <div id="db-div" class="container-exp"> <!-- TODO: Exports liszener -->
+        <div id="db-div" class="container-exp">
           <h2>Your latest exports:</h2>
           <table class="custom-table">
             <thead>
                 <tr class="table-headers">
-                    <th>Assignment:</th>
+                    <th>Export Type:</th>
                     <th>Subject:</th>
+                    <th>Date:</th>
                 </tr>
             </thead>
             <tbody>
+                <tr th:each="export : ${exports}" th:data-status="excellent">
+                    <td th:text="${export.exportType}">Export Type</td>
+                    <td th:text="${export.subject}">Subject</td>
+                    <td th:text="${#temporals.format(export.timestamp, 'dd.MM.yyyy HH:mm')}">Export Date</td>
+                </tr>
             </tbody>
-        </table>
+          </table>
         </div>
-      </div>
 
     </div>
     <script th:src="@{/js/script.js}"></script>
