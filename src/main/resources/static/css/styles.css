@@ -3,13 +3,12 @@ body {
     margin: 0;
     padding: 0;
     color: black;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 /* Light mode here (Default) */
 body.light-mode {
     background-color: #fff;
-    color: #ffffff;
+    color: #000000;
 }
 
 .menu {

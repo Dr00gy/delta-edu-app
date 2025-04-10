@@ -79,6 +79,7 @@ public class DashboardController {
         }
         model.addAttribute("date", formattedDate);
 
-        return "index";
+        }
+         return "index";
     }
 }

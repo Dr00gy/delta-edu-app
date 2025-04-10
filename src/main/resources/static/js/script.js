@@ -1,40 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const menu = document.getElementById("menu");
-    const burger = document.querySelector(".burger");
-    const closeBtn = document.getElementById("close-menu");
+  const menu = document.getElementById("menu");
+  const burger = document.querySelector(".burger");
+  const closeBtn = document.getElementById("close-menu");
 
-    // Toggle menu via burger
-    burger.addEventListener("click", function () {
-        menu.classList.toggle("show");
-    });
+  // Toggle menu via burger
+  burger.addEventListener("click", function () {
+      menu.classList.toggle("show");
+  });
 
-    // Close menu w/ arrow
-    closeBtn.addEventListener("click", function () {
-        menu.classList.remove("show");
-    });
+  // Close menu with arrow
+  closeBtn.addEventListener("click", function () {
+      menu.classList.remove("show");
+  });
 
-    // Dark/light mode
-    const modeToggle = document.querySelector(".mode-toggle");
+  // Check and apply saved theme on page load
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+      document.body.classList.add(savedTheme);
+  } else {
+      // Default to light mode if no theme is saved
+      document.body.classList.add("light-mode");
+  }
 
-    modeToggle.addEventListener("click", function () {
-        document.body.classList.toggle("light-mode");
-        document.body.classList.toggle("dark-mode");
-    });
+  // Dark/light mode toggle
+  const modeToggle = document.querySelector(".mode-toggle");
+
+  modeToggle.addEventListener("click", function () {
+      if (document.body.classList.contains("dark-mode")) {
+          document.body.classList.remove("dark-mode");
+          document.body.classList.add("light-mode");
+          localStorage.setItem('theme', 'light-mode');
+      } else {
+          document.body.classList.remove("light-mode");
+          document.body.classList.add("dark-mode");
+          localStorage.setItem('theme', 'dark-mode');
+      }
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".custom-table tbody tr").forEach(row => {
-        let status = row.getAttribute("data-status");
+  document.querySelectorAll(".custom-table tbody tr").forEach(row => {
+      let status = row.getAttribute("data-status");
 
-        if (status === "excellent") {
-            row.style.backgroundColor = "#c8e6c9"; // Light green
-        } else if (status === "average") {
-            row.style.backgroundColor = "#fff9c4"; // Light yellow
-        } else if (status === "poor") {
-            row.style.backgroundColor = "#ffccbc"; // Light red
-        }
-    });
+      if (status === "excellent") {
+          row.style.backgroundColor = "#c8e6c9"; // Light green
+      } else if (status === "average") {
+          row.style.backgroundColor = "#fff9c4"; // Light yellow
+      } else if (status === "poor") {
+          row.style.backgroundColor = "#ffccbc"; // Light red
+      }
+  });
 });
+
 
 document.addEventListener("DOMContentLoaded", function() {
     // Get modal elements
