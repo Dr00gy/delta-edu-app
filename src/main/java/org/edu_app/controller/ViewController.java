@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
-public class ViewController { // TODO:
+public class ViewController { // TODO: view contents of submitted file
 
     @GetMapping("/view")
     public String showUploadedFile() {

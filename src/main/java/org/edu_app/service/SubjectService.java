@@ -66,4 +66,8 @@ public class SubjectService {
         return subjectRepository.findSubjectsByTeacherId(teacherId);
     }
 
+    public Subject getSubjectById(Long subjectId) {
+        return subjectRepository.findById(subjectId).orElse(null);
+    }
+
 }

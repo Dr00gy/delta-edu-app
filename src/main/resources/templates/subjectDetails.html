@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <title th:text="${subject.name}">Subject Details</title>
+</head>
+<body> <!-- TODO: Finish this page according to Figma, served by SubjectsController.java  -->
+
+    <header class="header">
+        <div class="session-info">
+          <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+          <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+          <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+        </div>
+  
+        <div class="header-actions">
+          <button class="mode-toggle" onclick="toggleMode()">
+            <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+          </button>
+          <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+        </div>
+      </header>
+  
+      <button class="burger" onclick="toggleMenu()">☰</button>
+  
+      <div class="main-container">
+        <nav class="menu" id="menu">
+          <button class="close-btn" id="close-menu">←</button>
+          <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
+          <a href="/">Dashboard</a>
+          <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
+          <a href="subjects">Subjects</a>
+          <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
+          <a href="submissions">Submissions</a>
+          <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
+          <a href="grading">Grading</a>
+        </nav>
+
+    <div class="content">
+        <h2 th:text="${subject.name}">Subject Name</h2>
+        <p>Teacher: <span th:text="${subject.teacher.firstName} + ' ' + ${subject.teacher.lastName}">Teacher Name</span></p>
+        
+        <div class="container-sub">
+            <h3>Assignments:</h3>
+            <table class="custom-table">
+                <thead>
+                    <tr class="table-headers">
+                        <th>Assignment:</th>
+                        <th>Date submitted:</th>
+                        <th>Deadline:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="assignment : ${assignments}">
+                        <td th:text="${assignment.name}">Assignment Name</td>
+                        <td>
+                            <span>N/A</span>
+                        </td>
+                        <td th:text="${#dates.format(assignment.deadline, 'dd.MM.yyyy')}">Deadline</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Other sections to be added -->
+
+        <button><a href="/subjects">Back to Subjects</a></button>
+    </div>
+    <script th:src="@{/js/script.js}"></script>
+</body>
+</html>

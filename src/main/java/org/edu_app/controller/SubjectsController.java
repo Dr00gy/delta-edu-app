@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,11 +29,20 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class SubjectsController {
 
-    private final SubjectService subjectService;
-    private final EnrollmentService enrollmentService;
-    private final AssignmentService assignmentService;
-    private final SubmissionService submissionService;
-    private final CurrentUserUtils currentUserUtils;
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
+
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @Autowired
+    private SubmissionService submissionService;
+
+    @Autowired
+    private CurrentUserUtils currentUserUtils;
     
     private static final Logger logger = Logger.getLogger(SubjectsController.class.getName());
 
@@ -162,5 +172,42 @@ public class SubjectsController {
         public String getStatus() {
             return status;
         }
+    }
+
+    @GetMapping("/subjects/{id}")
+    public String showSubjectDetails(@PathVariable("id") Long subjectId, Model model) {
+        var user = currentUserUtils.get();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String formattedDate = LocalDate.now().format(formatter);
+
+        if (user != null) {
+            // Fetch subject by id (make it a name later)
+            Subject subject = subjectService.getSubjectById(subjectId);
+            if (subject == null) {
+                logger.warning("Subject not found with id: " + subjectId);
+                return "redirect:/subjects"; // Redirect if subject not found
+            }
+            
+            model.addAttribute("name", user.getFirstName());
+            model.addAttribute("role", user.getRole().toString()); // Convert enum to string for Thymeleaf
+            model.addAttribute("subject", subject); // Add the subject object to the model
+            model.addAttribute("date", formattedDate);
+
+            if (user.getRole() == Role.STUDENT) {
+                List<Assignment> assignments = assignmentService.getAssignmentsBySubjectIds(List.of(subjectId));
+                model.addAttribute("assignments", assignments);
+                List<Submission> submissions = submissionService.getSubmissionsByStudent(user.getId());
+                model.addAttribute("submissions", submissions);
+            } else if (user.getRole() == Role.TEACHER) {
+                Map<Long, Long> enrollmentCounts = enrollmentService.getEnrollmentCountsBySubject();
+                model.addAttribute("subjectEnrollmentMap", enrollmentCounts);
+            }
+
+        } else {
+            logger.warning("No user found in current context");
+            model.addAttribute("name", "Unknown");
+            model.addAttribute("role", "Unknown");
+        }
+        return "subjectDetails";
     }
 }

@@ -37,7 +37,7 @@
           <a href="grading">Grading</a>
         </nav>
   
-        <div class="content">
+        <div class="content"> <!-- TODO: finish this page like in FIgma, GradingController -->
           <div id="db-div" class="container-sub">
             <h2>Your grades:</h2>
             <table class="custom-table">
@@ -63,7 +63,7 @@
           <!-- For the second table (averages for students, ungraded submissions for teachers) -->
           <div id="db-div" class="container-exp">
             <h2 th:if="${role.name() == 'STUDENT'}">Your avg. scores:</h2>
-            <h2 th:if="${role.name() == 'TEACHER'}">Ungraded submissions:</h2>
+            <h2 th:if="${role.name() == 'TEACHER'}">Ungraded:</h2>
             
             <!-- For STUDENT role -->
             <table th:if="${role.name() == 'STUDENT'}" class="custom-table">
@@ -92,7 +92,9 @@
               </thead>
               <tbody>
                 <tr th:each="submission : ${ungradedSubmissions}">
-                  <td th:text="${submission.assignment.name}">Assignment Name</td>
+                  <td>
+                    <a th:href="@{'/assignments/' + ${submission.assignment.id}}" th:text="${submission.assignment.name}">Assignment Name</a>
+                  </td>
                   <td th:text="${submission.assignment.subject.name}">Subject Name</td>
                 </tr>
               </tbody>

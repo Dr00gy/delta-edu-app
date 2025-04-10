@@ -60,7 +60,7 @@ public class DashboardController {
             else if (user.getRole() == Role.TEACHER) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
                 model.addAttribute("submissions", latestSubmissions);
-                model.addAttribute("grades", List.of()); // Empty list def
+                model.addAttribute("grades", List.of()); // Empty list def TODO: for admin and teacher listen for latest grades submissions, will have to create some log like exportLog class or use audit listener
             } 
             else if (user.getRole() == Role.ADMIN) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissions();

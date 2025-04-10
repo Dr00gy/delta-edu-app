@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <title>Grade Assignment - ${assignment.name}</title>
+</head>
+<body>
+
+    <header class="header">
+        <div class="session-info">
+          <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+          <p class="lesser-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <h2>Grade Assignment: <span th:text="${assignment.name}">Assignment Name</span></h2>
+        
+        <form th:action="@{/assignments/{assignmentId}/grade(submissionId=${submission.id})}" method="POST">
+            <table class="custom-table">
+                <thead>
+                    <tr class="table-headers">
+                        <th>Student Name</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="submission : ${ungradedSubmissions}">
+                        <td th:text="${submission.student.name}">Student Name</td>
+                        <td><input type="text" name="score" th:value="${submission.score}"/></td>
+                        <td>
+                            <select name="grade">
+                                <option value="A" th:selected="${submission.grade == 'A'}">A</option>
+                                <option value="B" th:selected="${submission.grade == 'B'}">B</option>
+                                <option value="C" th:selected="${submission.grade == 'C'}">C</option>
+                                <option value="D" th:selected="${submission.grade == 'D'}">D</option>
+                                <option value="F" th:selected="${submission.grade == 'F'}">F</option>
+                            </select>
+                        </td>
+                        <td><button type="submit">Grade</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <script th:src="@{/js/script.js}"></script>
+
+</body>
+</html>
