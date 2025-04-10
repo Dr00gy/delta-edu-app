@@ -17,6 +17,9 @@
         <button class="mode-toggle" onclick="toggleMode()">
           <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
         </button>
+        <button class="manage-users" th:if="${role == 'TEACHER' || role == 'ADMIN'}">
+          <img class="manage-users-icon" th:src="@{/images/manage-users.svg}" alt="Manage Users" />
+        </button>
         <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
       </div>
     </header>
@@ -85,6 +88,69 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TODO: Fix student removal -->
+    <div id="student-management-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Student Management</h2>
+          <span class="close-modal">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+          <!-- Search Section -->
+          <div class="search-section">
+            <input type="text" id="student-search" placeholder="Search students..." />
+            <button id="search-btn">Search</button>
+          </div>
+          
+          <!-- Student List Section -->
+          <div class="student-list-section">
+            <h3 th:if="${role == 'TEACHER'}">Students in your subjects</h3>
+            <h3 th:if="${role == 'ADMIN'}">All students</h3>
+            
+            <div class="student-list-container">
+              <table class="custom-table" id="student-table">
+                <thead>
+                  <tr class="table-headers">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="student-list">
+                  <!-- Students will be populated here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Add Student Section -->
+          <div class="add-student-section">
+            <h3>Add Student to Subject</h3>
+            <div class="add-student-form">
+              <select id="student-select">
+                <option value="">Select Student</option>
+                <!-- Will be populated with AJAX -->
+              </select>
+              
+              <select id="subject-select" th:if="${role == 'ADMIN'}">
+                <option value="">Select Subject</option>
+                <option th:each="subject : ${subjects}" th:value="${subject.id}" th:text="${subject.name}"></option>
+              </select>
+
+              <select id="subject-select" th:if="${role == 'TEACHER'}">
+                <option value="">Select Subject</option>
+                <option th:each="subject : ${subjects}" th:value="${subject.id}" th:text="${subject.name}"></option>
+              </select>
+              
+              <button id="add-enrollment-btn">Add to Subject</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

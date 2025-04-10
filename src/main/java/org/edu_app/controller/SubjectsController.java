@@ -115,6 +115,11 @@ public class SubjectsController {
                     logger.info("Teacher subjects found: " + subjects.size());
                     Map<Long, Long> enrollmentCounts = enrollmentService.getEnrollmentCountsBySubject();
                     model.addAttribute("subjectEnrollmentMap", enrollmentCounts);
+                    
+                    // If teacher has subjects, set current subject ID to the first one
+                    if (!subjects.isEmpty()) {
+                        model.addAttribute("currentSubjectId", subjects.get(0).getId());
+                    }
                     break;
                     
                 case ADMIN:

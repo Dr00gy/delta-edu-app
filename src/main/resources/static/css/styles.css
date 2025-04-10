@@ -268,3 +268,146 @@ body.dark-mode .logout-icon {
         margin-left: 0; /* Content to full width */
     }
 }
+
+
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .modal-content {
+    background-color: #ebebeb;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  body.dark-mode .modal-content {
+    background-color: #333;
+    color: white;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .close-modal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close-modal:hover {
+    color: black;
+  }
+  
+  body.dark-mode .close-modal:hover {
+    color: white;
+  }
+  
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Search Section */
+  .search-section {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .search-section input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .search-section button {
+    padding: 8px 15px;
+    background-color: #3a7dcf;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Student List Section */
+  .student-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+  }
+  
+  /* Add Student Section */
+  .add-student-section {
+    margin-top: 20px;
+  }
+  
+  .add-student-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .add-student-form select, 
+  .add-student-form button {
+    padding: 8px;
+  }
+  
+  .add-student-form select {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .add-student-form button {
+    background-color: #3a7dcf;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Manage Users Button */
+  .manage-users {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .manage-users-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  body.dark-mode .manage-users-icon {
+    filter: invert(1);
+  }
+  
+  /* Action buttons in student table */
+  .remove-student-btn {
+    padding: 4px 8px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
