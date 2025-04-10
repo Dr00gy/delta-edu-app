@@ -26,13 +26,9 @@
     <div class="main-container">
       <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
-        <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
         <a href="/">Dashboard</a>
-        <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
         <a href="subjects">Subjects</a>
-        <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
         <a href="submissions">Submissions</a>
-        <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
         <a href="grading">Grading</a>
       </nav>
 
@@ -47,44 +43,50 @@
                     <th>Status:</th>
                 </tr>
             </thead>
-            <tbody> <!-- TODO: Fix this not rendering properly since this commit --> 
-              <tr th:each="subject : ${subjects}" th:if="${role} == 'STUDENT'" 
-                  th:with="status=${subjectStatusMap[subject.id].status}"
-                  th:data-status="${status}">
+            <tbody>
+              <!-- STUDENT VIEW -->
+              <tr th:each="subject : ${subjects}" th:if="${role == 'STUDENT'}" 
+                  th:attr="data-status=${subjectStatusMap != null && subjectStatusMap[subject.id] != null ? subjectStatusMap[subject.id].status : 'none'}">
                 <td>
                   <a th:href="@{/subjects/{id}(id=${subject.id})}"
-                    th:text="${subject.name}" class="subject-link">Subject Name</a>
+                    th:text="${subject.name}">Subject Name</a>
                 </td>
-                <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
-                <td th:with="count=${subjectStatusMap[subject.id].missingCount}">
-                  <span th:if="${count == 0}">All assignments submitted</span>
-                  <span th:if="${count == 1}">1 missing assignment</span>
-                  <span th:if="${count > 1}" th:text="${count} + ' missing assignments'">Missing assignments</span>
+                <td th:text="${subject.teacher != null ? subject.teacher.firstName + ' ' + subject.teacher.lastName : 'Unknown Teacher'}">Teacher Name</td>
+                <td th:if="${subjectStatusMap != null && subjectStatusMap[subject.id] != null}">
+                  <span th:with="count=${subjectStatusMap[subject.id].missingCount}">
+                    <span th:if="${count == 0}">All assignments submitted</span>
+                    <span th:if="${count == 1}">1 missing assignment</span>
+                    <span th:if="${count > 1}" th:text="${count} + ' missing assignments'">Missing assignments</span>
+                  </span>
+                </td>
+                <td th:if="${subjectStatusMap == null || subjectStatusMap[subject.id] == null}">
+                  Status unavailable
                 </td>
               </tr>
             
-              <tr th:each="subject : ${subjects}" th:if="${role} == 'TEACHER'">
+              <!-- TEACHER VIEW -->
+              <tr th:each="subject : ${subjects}" th:if="${role == 'TEACHER'}">
                 <td>
                   <a th:href="@{/subjects/{id}(id=${subject.id})}"
-                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                     th:text="${subject.name}">Subject Name</a>
                 </td>
                 <td>You</td>
-                <td th:text="${subjectEnrollmentMap[subject.id]}">Enrollments</td> <!-- TODO: Link to and create student management page --> 
+                <td th:text="${subjectEnrollmentMap != null && subjectEnrollmentMap[subject.id] != null ? subjectEnrollmentMap[subject.id] : '0'}">Enrollments</td>
               </tr>
             
-              <tr th:each="subject : ${subjects}" th:if="${role} == 'ADMIN'">
+              <!-- ADMIN VIEW -->
+              <tr th:each="subject : ${subjects}" th:if="${role == 'ADMIN'}">
                 <td>
                   <a th:href="@{/subjects/{id}(id=${subject.id})}"
-                     th:text="${subject.name}" class="subject-link">Subject Name</a>
+                     th:text="${subject.name}">Subject Name</a>
                 </td>
-                <td th:text="${subject.teacher.firstName + ' ' + subject.teacher.lastName}">Teacher Name</td>
-                <td th:text="${subjectEnrollmentMap[subject.id]}">Enrollments</td>
+                <td th:text="${subject.teacher != null ? subject.teacher.firstName + ' ' + subject.teacher.lastName : 'Unknown Teacher'}">Teacher Name</td>
+                <td th:text="${subjectEnrollmentMap != null && subjectEnrollmentMap[subject.id] != null ? subjectEnrollmentMap[subject.id] : '0'}">Enrollments</td>
               </tr>
             </tbody>
-            
-        </table>
+          </table>
         </div>
-
+      </div>
     </div>
     <script th:src="@{/js/script.js}"></script>
   </body>

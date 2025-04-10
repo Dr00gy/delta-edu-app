@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.edu_app.model.entity.Assignment;
 import org.edu_app.model.entity.Subject;
 import org.edu_app.model.entity.Submission;
+import org.edu_app.model.entity.Role;
 import org.edu_app.service.AssignmentService;
 import org.edu_app.service.EnrollmentService;
 import org.edu_app.service.SubjectService;
@@ -12,6 +13,7 @@ import org.edu_app.utils.CurrentUserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +33,9 @@ public class SubjectsController {
     private final AssignmentService assignmentService;
     private final SubmissionService submissionService;
     private final CurrentUserUtils currentUserUtils;
+    
+    // Add logging to help debug issues
+    private static final Logger logger = Logger.getLogger(SubjectsController.class.getName());
 
     @GetMapping("/subjects")
     public String showSubjects(Model model) {
@@ -38,19 +44,24 @@ public class SubjectsController {
         String formattedDate = LocalDate.now().format(formatter);
         
         if (user != null) {
+            logger.info("User found: " + user.getFirstName() + " with role " + user.getRole());
             model.addAttribute("name", user.getFirstName());
-            model.addAttribute("role", user.getRole());
+            model.addAttribute("role", user.getRole().toString()); // Convert enum to string for comparison in Thymeleaf
             List<Subject> subjects;
             
             switch (user.getRole()) {
                 case STUDENT:
                     subjects = subjectService.getSubjectsByStudentId(user.getId());
+                    logger.info("Student subjects found: " + subjects.size());
+                    
                     // Calculate missing assignments for each subject
                     Map<Long, SubjectAssignmentStatus> subjectStatusMap = new HashMap<>();
                     List<Submission> studentSubmissions = submissionService.getSubmissionsByStudent(user.getId());
+                    logger.info("Student submissions found: " + studentSubmissions.size());
                     
                     for (Subject subject : subjects) {
-                        List<Assignment> subjectAssignments = subject.getAssignments();
+                        List<Assignment> subjectAssignments = assignmentService.getAssignmentsBySubjectIds(List.of(subject.getId()));
+                        logger.info("Subject " + subject.getName() + " has " + subjectAssignments.size() + " assignments");
                         
                         // Get all assignment IDs for this subject
                         List<Long> assignmentIds = subjectAssignments.stream()
@@ -92,6 +103,7 @@ public class SubjectsController {
                             }
                         }
                         
+                        logger.info("Subject " + subject.getName() + " status: " + status + " with " + missingCount + " missing assignments");
                         subjectStatusMap.put(subject.getId(), new SubjectAssignmentStatus(missingCount, status));
                     }
                     
@@ -100,21 +112,26 @@ public class SubjectsController {
                     
                 case TEACHER:
                     subjects = subjectService.getSubjectsByTeacherId(user.getId());
-                    model.addAttribute("subjectEnrollmentMap", enrollmentService.getEnrollmentCountsBySubject());
+                    logger.info("Teacher subjects found: " + subjects.size());
+                    Map<Long, Long> enrollmentCounts = enrollmentService.getEnrollmentCountsBySubject();
+                    model.addAttribute("subjectEnrollmentMap", enrollmentCounts);
                     break;
                     
                 case ADMIN:
                     subjects = subjectService.getAllSubjects();
+                    logger.info("Admin subjects found: " + subjects.size());
                     model.addAttribute("subjectEnrollmentMap", enrollmentService.getEnrollmentCountsBySubject());
                     break;
                     
                 default:
                     subjects = List.of();
+                    logger.warning("Unknown role: " + user.getRole());
                     break;
             }
             
             model.addAttribute("subjects", subjects);
         } else {
+            logger.warning("No user found in current context");
             model.addAttribute("name", "Unknown");
             model.addAttribute("role", "Unknown");
             model.addAttribute("subjects", List.of());
@@ -124,8 +141,8 @@ public class SubjectsController {
         return "subjects";
     }
     
-    // Helper class to store missing assignments count and status
-    private static class SubjectAssignmentStatus {
+    // Helper class to store missing assignments count and status - make it public static for Thymeleaf access
+    public static class SubjectAssignmentStatus {
         private final int missingCount;
         private final String status;
         
