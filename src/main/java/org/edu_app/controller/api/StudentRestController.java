@@ -51,7 +51,7 @@ public class StudentRestController {
             return ResponseEntity.status(403).build();
         }
         
-        // Get all users and filter in memory instead of at database level
+        // Get all users and filter in memory instead of at database level (again, so we do not have to edit User stuff or DB)
         List<User> allUsers = userService.getAllUsers();
         List<User> students = allUsers.stream()
                 .filter(user -> user.getRole() == Role.STUDENT)
@@ -73,8 +73,8 @@ public class StudentRestController {
             return ResponseEntity.status(403).build();
         }
         
-        // Get all users instead of filtering at the database level
-        List<User> allUsers = userService.getAllUsers(); // Assuming there's a method to get all users
+        // Get all users instead of filtering at the database level (again, so we do not have to edit User stuff or DB)
+        List<User> allUsers = userService.getAllUsers();
         
         // Filter students in Java code using enum comparison instead of string comparison
         List<User> students = allUsers.stream()

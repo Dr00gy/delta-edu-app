@@ -34,7 +34,6 @@ public class SubjectsController {
     private final SubmissionService submissionService;
     private final CurrentUserUtils currentUserUtils;
     
-    // Add logging to help debug issues
     private static final Logger logger = Logger.getLogger(SubjectsController.class.getName());
 
     @GetMapping("/subjects")
@@ -54,7 +53,7 @@ public class SubjectsController {
                     subjects = subjectService.getSubjectsByStudentId(user.getId());
                     logger.info("Student subjects found: " + subjects.size());
                     
-                    // Calculate missing assignments for each subject
+                    // Calculate missing assignments for each subject by comparing submissions not being in the grades table
                     Map<Long, SubjectAssignmentStatus> subjectStatusMap = new HashMap<>();
                     List<Submission> studentSubmissions = submissionService.getSubmissionsByStudent(user.getId());
                     logger.info("Student submissions found: " + studentSubmissions.size());
@@ -146,7 +145,7 @@ public class SubjectsController {
         return "subjects";
     }
     
-    // Helper class to store missing assignments count and status - make it public static for Thymeleaf access
+    // Helper class to store missing assignments count and status, public static for Thymeleaf access
     public static class SubjectAssignmentStatus {
         private final int missingCount;
         private final String status;

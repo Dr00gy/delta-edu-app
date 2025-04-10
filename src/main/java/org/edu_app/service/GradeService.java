@@ -91,7 +91,6 @@ public class GradeService {
             this.averagePercentage = averagePercentage;
         }
         
-        // Getters
         public String getSubjectName() { return subjectName; }
         public Double getAveragePercentage() { return averagePercentage; }
     }

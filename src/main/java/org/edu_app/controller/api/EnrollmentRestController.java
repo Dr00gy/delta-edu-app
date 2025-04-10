@@ -33,7 +33,7 @@ public class EnrollmentRestController {
     public ResponseEntity<?> createEnrollment(@RequestBody EnrollmentCreateDTO enrollmentCreateDTO) {
         var currentUser = currentUserUtils.get();
         
-        // Verify user is admin or teacher
+        // Verify that the user is admin or teacher
         if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
             return ResponseEntity.status(403).build();
         }
@@ -65,7 +65,7 @@ public class EnrollmentRestController {
 public ResponseEntity<?> removeEnrollment(@PathVariable Long studentId, @PathVariable Long subjectId) {
     var currentUser = currentUserUtils.get();
     
-    // Verify user is admin or teacher
+    // Verify that the user is admin or teacher
     if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
         return ResponseEntity.status(403).build();
     }
@@ -105,7 +105,7 @@ public ResponseEntity<?> removeEnrollment(@PathVariable Long studentId, @PathVar
 public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
     var currentUser = currentUserUtils.get();
     
-    // Only admins can remove students from all subjects at once
+    // Only admins can remove students from all subjects at once!
     if (currentUser == null || !currentUser.getRole().equals(Role.ADMIN)) {
         return ResponseEntity.status(403).build();
     }
@@ -134,7 +134,7 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
     public ResponseEntity<List<SubjectDTO>> getStudentSubjects(@PathVariable Long studentId) {
         var currentUser = currentUserUtils.get();
         
-        // Verify user is admin or teacher
+        // Verify that the user is admin or teacher
         if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
             return ResponseEntity.status(403).build();
         }
@@ -162,7 +162,7 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
     public ResponseEntity<List<UserDTO>> getTeacherStudents() {
         var currentUser = currentUserUtils.get();
 
-        // Verify user is a teacher
+        // Verify that the user is a teacher
         if (currentUser == null || !currentUser.getRole().equals(Role.TEACHER)) {
             return ResponseEntity.status(403).build();
         }
@@ -171,7 +171,7 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
             // Get the subjects taught by the current teacher
             List<Subject> teacherSubjects = subjectService.getSubjectsByTeacherId(currentUser.getId());
 
-            // Get all users and filter in Java
+            // Get all users and filter in Java (so we dont have to edit User service or DB)
             List<User> allUsers = userService.getAllUsers();
 
             List<User> students = new ArrayList<>();
@@ -184,7 +184,7 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
                             enr.getSubject() != null && 
                             enr.getSubject().getId().equals(subject.getId()))) {
 
-                        // Avoid duplicates
+                        // Duplicates handling
                         if (!students.contains(user)) {
                             students.add(user);
                         }

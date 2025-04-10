@@ -76,7 +76,7 @@ public class UploadController {
                 // Admin can submit to any assignment
                 assignments = assignmentService.getAllAssignments();
             } else {
-                // Students can only submit to assignments in subjects they're enrolled in
+                // Students can only submit to assignments in subjects they r enrolled in
                 assignments = getAssignmentsForStudent(currentUser.getId());
             }
             
@@ -119,7 +119,6 @@ public class UploadController {
                 }
             }
 
-            // Ensure the upload directory exists
             File directory = new File(uploadDirectory);
             if (!directory.exists()) {
                 directory.mkdirs();
@@ -151,7 +150,7 @@ public class UploadController {
                     extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
                 }
 
-                // Create the new filename with the correct pattern and extension
+                // Create the new filename with the correct pattern and extension (pattern needed to view contents of the file later)
                 String newFileName = String.format(
                     "%05dass_%05dstud_%05dsub%s", 
                     assignment.getId(), 

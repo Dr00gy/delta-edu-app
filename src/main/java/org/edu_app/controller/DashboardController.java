@@ -41,18 +41,15 @@ public class DashboardController {
 
     @GetMapping("/")
     public String showHome(Model model) {
-        // Get authenticated user
         var user = currentUserUtils.get();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
-        // Add attributes to model from userDetails
         if (user != null) {
             model.addAttribute("name", user.getFirstName());
             model.addAttribute("role", user.getRole());
 
-            // Different views based on role
             if (user.getRole() == Role.STUDENT) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByStudent(user.getId());
                 model.addAttribute("submissions", latestSubmissions);
@@ -61,19 +58,16 @@ public class DashboardController {
                 model.addAttribute("grades", latestGrades);
             } 
             else if (user.getRole() == Role.TEACHER) {
-                // Get latest submissions for subjects taught by this teacher
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
                 model.addAttribute("submissions", latestSubmissions);
-                model.addAttribute("grades", List.of()); // Empty list for now
+                model.addAttribute("grades", List.of()); // Empty list def
             } 
             else if (user.getRole() == Role.ADMIN) {
-                // Get latest submissions across all subjects
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissions();
                 model.addAttribute("submissions", latestSubmissions);
-                model.addAttribute("grades", List.of()); // Empty list for now
-            }
+                model.addAttribute("grades", List.of()); // Empty list def
             
-            // Add latest exports for all user types
+            // Add latest exports for all user roles
             List<ExportRecord> latestExports = exportLogService.getLatestExportsByUser(user.getId(), 5);
             model.addAttribute("exports", latestExports);
         } else {

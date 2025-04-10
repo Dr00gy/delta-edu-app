@@ -29,7 +29,6 @@ public class ExportLogger {
      */
     public void logExport(Long userId, String exportType, String subjectName, String assignmentName) {
         try {
-            // Ensure log directory exists
             Path logDir = Paths.get(LOG_FOLDER);
             if (!Files.exists(logDir)) {
                 Files.createDirectories(logDir);
@@ -49,7 +48,7 @@ public class ExportLogger {
                 writer.append(logEntry);
             }
         } catch (IOException e) {
-            // Handle exception (in a real application, you might want to use a proper logger here)
+            // Handle exception (should be logger)
             System.err.println("Error writing to export log: " + e.getMessage());
         }
     }

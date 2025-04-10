@@ -131,9 +131,7 @@ public class ExportController {
         }
     }
     
-    // Rest of the ExportController remains the same...
     private List<File> filterFilesByUserRole(File[] files, UserDTO user) {
-        // Same implementation as before
         List<File> filteredFiles = new ArrayList<>();
         
         if (user.getRole() == Role.ADMIN) {
@@ -169,7 +167,6 @@ public class ExportController {
     }
     
     private boolean matchesAssignmentIds(String fileName, List<Long> assignmentIds) {
-        // Same implementation as before
         String[] parts = fileName.split("_");
         if (parts.length >= 1) {
             String assignmentPart = parts[0];
@@ -199,7 +196,6 @@ public class ExportController {
     }
     
     private void addFileToZip(File file, String fileName, ZipOutputStream zipOut) throws IOException {
-        // Same implementation as before
         FileInputStream fis = new FileInputStream(file);
         ZipEntry zipEntry = new ZipEntry(fileName);
         zipOut.putNextEntry(zipEntry);

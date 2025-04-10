@@ -26,7 +26,7 @@ public class SubjectRestController {
     public ResponseEntity<List<SubjectDTO>> getTeacherSubjects() {
         var currentUser = currentUserUtils.get();
         
-        // Verify user is a teacher
+        // Verify that the user is a teacher
         if (currentUser == null || !currentUser.getRole().equals(Role.TEACHER)) {
             return ResponseEntity.status(403).build();
         }
