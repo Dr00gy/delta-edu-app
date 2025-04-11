@@ -1,6 +1,1 @@
-{
-  "submittedAt": "2025-03-26T14:30:00",
-  "studentComment": "Test assignment",
-  "studentId": 4,
-  "assignmentId": 2
-}
+{"id":1,"submittedAt":"2025-04-11T16:55:12.1210381","studentComment":"Here is my solution","student":{"id":2,"email":"student@vsb.com","firstName":"Jane","lastName":"Smith","role":"STUDENT","operation":null,"lastModified":null,"submissions":[],"subjects":[],"grades":[],"enrollments":[]},"assignment":{"id":1,"name":"Assignment 1","description":"Description 1","maxPoints":10.0,"deadline":"2025-04-11T16:55:12.1210381","subject":null,"operation":null,"lastModified":null,"submissions":[]},"operation":null,"lastModified":null}
