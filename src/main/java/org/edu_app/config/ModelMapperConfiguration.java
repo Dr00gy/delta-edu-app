@@ -1,4 +1,4 @@
-package org.edu_app.configuration;
+package org.edu_app.config;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

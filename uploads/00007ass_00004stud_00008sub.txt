@@ -1,0 +1,8 @@
+Tlacitko pro upravu assignmentu a subbmissionu // fe
+tlacitko pro pridani assignmentu // fe
+Upload a export pro studenty ucitele //be? i fe
+pridavani komentaru //
+ukazani student_id u submitted
+- V subjects (pod subjecty) videt své assignmenty, kdy je zadal a kdy je deadline
+- tlacitko pri pridavani assignments
+- export pro ucitele

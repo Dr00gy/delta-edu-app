@@ -20,7 +20,9 @@ INSERT INTO assignments (name, description, max_points, deadline, subject_id) VA
 ('Arduino', 'Create a train semaphore', 75, '2025-04-10 12:00:00', 3),
 ('English Exam 1', 'Midterm test', 60, '2025-04-15 12:00:00', 4),
 ('English Essay', 'Any topic', 60, '2025-04-15 12:00:00', 4),
-('Java Exam', 'Midterm test', 100, '2025-04-20 12:00:00', 2);
+('Java Exam', 'Midterm test', 100, '2025-04-20 12:00:00', 2),
+('MatikaAssignment', 'Tohle je test jestli se zobrazuji assignmenty', 10, '2025-05-20 12:00:00', 1),
+('MatikaGrading', 'Tohle je test jestli se da Gradovat', 20, '2025-05-19 12:00:00', 1);
 
 INSERT INTO enrollments (student_id, subject_id) VALUES
 (4, 1), (4, 2), (5, 3), (5, 4), (4, 5);
@@ -31,7 +33,8 @@ INSERT INTO submissions (submitted_at, student_comment, student_id, assignment_i
 ('2025-03-25 16:45:00', 'Simple Arduino semaphore', 5, 3),
 ('2025-03-27 18:00:00', 'Test ENG', 5, 4),
 ('2025-03-27 18:00:00', 'Boeing Essay', 5, 5),
-('2025-03-30 09:15:00', 'Test Java', 4, 6);
+('2025-03-30 09:15:00', 'Test Java', 4, 6),
+('2025-03-30 09:15:00', 'Matika Grading je easy af', 4, 8);
 
 INSERT INTO grades (score, feedback, submission_id, teacher_id) VALUES
 (95, 'Excellent work!', 1, 2),

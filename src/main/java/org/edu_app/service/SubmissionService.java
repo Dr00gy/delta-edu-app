@@ -74,4 +74,28 @@ public class SubmissionService {
     public List<Submission> getSubmissionsByTeacher(Long teacherId) {
     return submissionRepository.findByAssignment_Subject_TeacherId(teacherId);
     }
+
+    public List<Submission> getSubmissionsWithoutGrade(Long assignmentId) {
+        List<Submission> ungradedSubs = submissionRepository.findSubmissionsWithoutGrade(assignmentId);
+        System.out.println("getSubmissionsWithoutGrade: Found " + ungradedSubs.size() + " ungraded submissions for assignment " + assignmentId);
+        for (Submission s : ungradedSubs) {
+            System.out.println("Submission id: " + s.getId() + ", comment: " + s.getStudentComment());
+        }
+        return ungradedSubs;
+
+    }
+
+    public Submission getSubmissionWithoutGrade(Long assignmentId) {
+        List<Submission> ungradedSubs = submissionRepository.findSubmissionsWithoutGrade(assignmentId);
+        System.out.println("getSubmissionsWithoutGrade: Found " + ungradedSubs.size() + " ungraded submissions for assignment " + assignmentId);
+        for (Submission s : ungradedSubs) {
+            System.out.println("Submission id: " + s.getId() + ", comment: " + s.getStudentComment());
+        }
+        return ungradedSubs.get(0);
+
+    }
+    //NEW
+    public List<Submission> getSubmissionsWithoutGrade1(Long assignmentId) {
+        return submissionRepository.findUngradedSubmissionsByAssignmentId(assignmentId);
+    }
 }

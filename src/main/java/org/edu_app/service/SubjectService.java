@@ -66,6 +66,12 @@ public class SubjectService {
         return subjectRepository.findSubjectsByTeacherId(teacherId);
     }
 
+    public List<Long> getSubjectsByTeacherIdReturnId(Long teacherId) {
+        return subjectRepository.findSubjectsByTeacherId(teacherId).stream()
+                .map(Subject::getId)
+                .toList();
+    }
+
     public Subject getSubjectById(Long subjectId) {
         return subjectRepository.findById(subjectId).orElse(null);
     }

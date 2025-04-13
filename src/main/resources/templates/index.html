@@ -11,7 +11,7 @@
       <div class="session-info">
         <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
         <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
-        <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+        <p class="bigger-p2" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
       </div>
 
       <div class="header-actions">
@@ -30,79 +30,84 @@
         <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
         <a href="/">Dashboard</a>
         <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
-        <a href="subjects">Subjects</a>
+        <a href="/subjects">Subjects</a>
         <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
-        <a href="submissions">Submissions</a>
+        <a href="/submissions">Submissions</a>
         <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
-        <a href="grading">Grading</a>
-      </nav>
-
-      <div class="content">
-        <div id="db-div" class="container-sub">
-          <h2>Your latest submissions:</h2>
-          <table class="custom-table">
-            <thead>
-                <tr class="table-headers">
-                    <th>Assignment:</th>
-                    <th>Subject:</th>
-                    <th>Date submitted:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
-                    <td th:text="${submission.assignment.name}">Assignment Name</td> 
-                    <td th:text="${submission.assignment.subject.name}">Subject Name</td>
-                    <td th:text="${#temporals.format(submission.submittedAt, 'dd.MM.yyyy')}">Submission Date</td>
-                </tr>
-            </tbody>
-        </table>
+          <!--<a href="assignments">Assignments</a> -->
+        <a href="/grading">Grading</a>
+        <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+            <a href="/upload">Upload</a>
         </div>
+        <a href="/export">Export</a>
+        </nav>
 
-        <div id="db-div" class="container-grad">
-          <h2>Your latest grades:</h2>
-          <table class="custom-table">
-            <thead>
-                <tr class="table-headers">
-                    <th>Assignment:</th>
-                    <th>Subject:</th>
-                    <th>Grade:</th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr th:each="grade : ${grades}"
-              th:data-status="${grade.score >= 0.8 * grade.submission.assignment.maxPoints ? 'excellent' 
-                               : (grade.score &lt;= 0.2 * grade.submission.assignment.maxPoints ? 'poor' 
-                               : 'average')}">
-                  <td th:text="${grade.submission.assignment.name}">Assignment Name</td>
-                  <td th:text="${grade.submission.assignment.subject.name}">Subject Name</td>
-                  <td th:text="${grade.score}">Grade</td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-
-        <div id="db-div" class="container-exp">
-          <h2>Your latest exports:</h2>
-          <table class="custom-table">
-            <thead>
-                <tr class="table-headers">
-                    <th>Export Type:</th>
-                    <th>Subject:</th>
-                    <th>Date:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="export : ${exports}" th:data-status="excellent">
-                    <td th:text="${export.exportType}">Export Type</td>
-                    <td th:text="${export.subject}">Subject</td>
-                    <td th:text="${#temporals.format(export.timestamp, 'dd.MM.yyyy HH:mm')}">Export Date</td>
-                </tr>
-            </tbody>
+        <div class="content">
+          <div id="db-div" class="container-sub">
+            <h2>Your latest submissions:</h2>
+            <table class="custom-table">
+              <thead>
+                  <tr class="table-headers">
+                      <th>Assignment:</th>
+                      <th>Subject:</th>
+                      <th>Date submitted:</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
+                      <td th:text="${submission.assignment.name}">Assignment Name</td>
+                      <td th:text="${submission.assignment.subject.name}">Subject Name</td>
+                      <td th:text="${#temporals.format(submission.submittedAt, 'dd.MM.yyyy')}">Submission Date</td>
+                  </tr>
+              </tbody>
           </table>
-        </div>
+          </div>
 
-    </div>
-    <script th:src="@{/js/script.js}"></script>
-    
-  </body>
-</html>
+          <div id="db-div" class="container-grad">
+            <h2>Your latest grades:</h2>
+            <table class="custom-table">
+              <thead>
+                  <tr class="table-headers">
+                      <th>Assignment:</th>
+                      <th>Subject:</th>
+                      <th>Grade:</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr th:each="grade : ${grades}"
+                th:data-status="${grade.score >= 0.8 * grade.submission.assignment.maxPoints ? 'excellent'
+                                 : (grade.score &lt;= 0.2 * grade.submission.assignment.maxPoints ? 'poor'
+                                 : 'average')}">
+                    <td th:text="${grade.submission.assignment.name}">Assignment Name</td>
+                    <td th:text="${grade.submission.assignment.subject.name}">Subject Name</td>
+                    <td th:text="${grade.score}">Grade</td>
+                  </tr>
+              </tbody>
+          </table>
+          </div>
+
+          <div id="db-div" class="container-exp">
+            <h2>Your latest exports:</h2>
+            <table class="custom-table">
+              <thead>
+                  <tr class="table-headers">
+                      <th>Export Type:</th>
+                      <th>Subject:</th>
+                      <th>Date:</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr th:each="export : ${exports}" th:data-status="excellent">
+                      <td th:text="${export.exportType}">Export Type</td>
+                      <td th:text="${export.subject}">Subject</td>
+                      <td th:text="${#temporals.format(export.timestamp, 'dd.MM.yyyy HH:mm')}">Export Date</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <script th:src="@{/js/script.js}"></script>
+
+    </body>
+  </html>

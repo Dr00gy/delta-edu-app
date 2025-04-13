@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <title>Edu Submissions</title>
+</head>
+<body>
+<header class="header">
+    <div class="session-info">
+        <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+        <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+        <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
+    </div>
+
+    <div class="header-actions">
+        <button class="mode-toggle" onclick="toggleMode()">
+            <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+        </button>
+        <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+    </div>
+</header>
+
+
+<button class="burger" onclick="toggleMenu()">☰</button>
+<nav class="menu" id="menu">
+    <button class="close-btn" id="close-menu">←</button>
+    <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
+    <a href="/">Dashboard</a>
+    <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
+    <a href="/subjects">Subjects</a>
+    <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
+    <a href="/submissions">Submissions</a>
+    <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
+
+    <a href="/grading">Grading</a>
+    <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+        <a href="/upload">Upload</a>
+    </div>
+    <a href="/export">Export</a>
+</nav>
+
+<div class="content">
+    <div id="db-div" class="container-sub">
+        <!--<div th:if="${role.toString() == 'TEACHER'}">
+            <h2>Your assignments:</h2>
+        </div>
+        <div th:if="${role.name() == 'STUDENT'}">-->
+        <h2>Your submissions:</h2> <!-- NOTE: Student view -->
+        <!--</div>-->
+        <table class="custom-table">
+            <thead>
+            <tr class="table-headers">
+                <th>Assignment:</th>
+                <th>Subject:</th>
+                <th>Date submitted:</th>
+                <th>Edit:</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
+                <td>
+                    <a th:href="@{'/assignmentsDetailed/' + ${submission.assignment.id}}"
+                       th:text="${submission.assignment.name}">Assignment</a>
+                </td>
+                <!--<td th:text="${submission.getAssignment().getName()}">Assignment</td>-->
+                <td th:text="${submission.getAssignment().getSubject().getName()}">Subject</td>
+                <td th:text="${#temporals.format(submission.getSubmittedAt(), 'dd.MM.yyyy')}">SubmittedAt</td>
+                <td>
+                    <button class="settings-btn" onclick="toggleSettings()">
+                        <img th:src="@{/images/settings_white.svg}" alt="Settings">
+                    </button>
+                    <!--<div class="settings-menu" id="settings-menu">
+                        <a th:href="@{'/assignments/edit/' + ${assignment.id}}">Edit</a>
+                        <form th:action="@{'/assignments/delete/' + ${assignment.id}}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

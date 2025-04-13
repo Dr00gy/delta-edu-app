@@ -1,7 +1,11 @@
 package org.edu_app.controller;
 
+import org.edu_app.model.entity.Assignment;
 import org.edu_app.model.entity.Grade;
+import org.edu_app.model.entity.Submission;
 import org.edu_app.repository.GradeRepository;
+import org.edu_app.repository.SubmissionRepository;
+import org.edu_app.service.AssignmentService;
 import org.edu_app.service.GradeService;
 import org.edu_app.service.SubmissionService;
 import org.edu_app.utils.CurrentUserUtils;
@@ -29,7 +33,12 @@ public class GradingController {
     @Autowired
     CurrentUserUtils currentUserUtils;
 
-@GetMapping("/grading")
+    @Autowired
+    AssignmentService assignmentService;
+    @Autowired
+    private SubmissionRepository submissionRepository;
+
+    @GetMapping("/grading")
 public String grading(Model model) {
     var user = currentUserUtils.get();
 
@@ -67,57 +76,75 @@ public String grading(Model model) {
 
     return "grading";
     }
-
+        /*
         // Display the specific assignment grading page
-    @GetMapping("/assignments/{assignmentId}")
-    public String gradeAssignment(@PathVariable("assignmentId") Long assignmentId, Model model) {
-        var user = currentUserUtils.get();
+        @GetMapping("/assignments/{assignmentId}")
+        public String gradeAssignment(@PathVariable("assignmentId") Long assignmentId, Model model) {
+            var user = currentUserUtils.get();
 
-        // Check if the user is a teacher
-        /*if (user == null || user.getRole() != Role.TEACHER) {
-            return "redirect:/";  // Redirect to home page if not a teacher
+
+
+            System.out.println("Received assignment ID: " + assignmentId);
+
+            try {
+                System.out.println("Current user: " + user.getFirstName() + " " + user.getLastName());
+                Assignment assignment = assignmentService.getAssignment(assignmentId);
+                System.out.println("Assignment found: " + (assignment != null));
+                // rest of your code
+            } catch (Exception e) {
+                System.err.println("Exception details: " + e.getMessage());
+                e.printStackTrace();
+                return "error";
+            }
+
+
+            try {
+                Assignment assignment = assignmentService.getAssignment(assignmentId);
+                if (assignment == null) {
+                    return "error"; // Create a generic error page
+                }
+
+                model.addAttribute("assignment", assignment);
+                Submission submission = submissionService.getSubmissionsByAssignment(assignmentId).get(0);
+
+                List<Submission> unGradedSubs = submissionService.getSubmissionsWithoutGrade(assignmentId);
+                model.addAttribute("submission", submission);
+                System.out.println("Controller: ungradedSubmissions size = " + unGradedSubs.size());
+                model.addAttribute("ungradedSubmissions", unGradedSubs);
+                model.addAttribute("name", user.getFirstName());
+                model.addAttribute("role", user.getRole());
+
+                // Don't forget to add date like in other controllers
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                String formattedDate = LocalDate.now().format(formatter);
+                model.addAttribute("date", formattedDate);
+
+                return "gradeAssignment";
+            } catch (Exception e) {
+                System.err.println("Error loading assignment: " + e.getMessage());
+                return "error";
+            }
         }*/
+        @GetMapping("/assignments/{assignmentId}")
+        public String gradeAssignment(@PathVariable("assignmentId") Long assignmentId, Model model) {
+            var user = currentUserUtils.get();
+            Assignment assignment = assignmentService.getAssignment(assignmentId);
+            if (assignment == null) {
+                return "error";  // or another error page
+            }
 
-        // Get the assignment by ID
-        /*var assignment = assignmentService.getAssignmentById(assignmentId);
-        if (assignment == null) {
-            model.addAttribute("error", "Assignment not found");
-            return "redirect:/grading";  // Redirect back if the assignment doesn't exist
-        }*/
+            // Fetch only submissions for this assignment that are ungraded.
+            List<Submission> ungradedSubs = submissionService.getSubmissionsWithoutGrade(assignmentId);
 
-        // Get all ungraded submissions for this assignment
-        //var ungradedSubmissions = submissionService.getUngradedSubmissionsByAssignmentId(assignmentId);
-        //model.addAttribute("assignment", assignment);
-        //model.addAttribute("ungradedSubmissions", ungradedSubmissions);
-        model.addAttribute("name", user.getFirstName());
-        model.addAttribute("role", user.getRole());
+            model.addAttribute("assignment", assignment);
+            model.addAttribute("ungradedSubmissions", ungradedSubs);
+            model.addAttribute("name", user.getFirstName());
+            model.addAttribute("role", user.getRole());
 
-        return "gradeAssignment";  // This page will show the ungraded submissions
-    }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            model.addAttribute("date", LocalDate.now().format(formatter));
 
-    // Handle the grading submission (when a teacher submits grades for a student's submission)
-    //@PostMapping("/assignments/{assignmentId}/grade")
-    /*public String gradeSubmission(@PathVariable("assignmentId") Long assignmentId,
-                                   @RequestParam("submissionId") Long submissionId,
-                                   @RequestParam("score") Double score,
-                                   @RequestParam("grade") String grade) {
-
-        // Fetch the ungraded submission
-        Submission submission = submissionService.getSubmissionById(submissionId);
-        if (submission == null) {
-            return "redirect:/grading";  // Redirect if the submission is not found
+            return "gradeAssignment";
         }
 
-        // Create a new grade for the submission
-        Grade gradeEntity = new Grade();
-        gradeEntity.setSubmission(submission);
-        gradeEntity.setScore(score);
-        gradeEntity.setGrade(grade);
-
-        // Save the grade to the database
-        gradeService.saveGrade(gradeEntity);
-
-        // Redirect back to the assignment grading page
-        return "redirect:/assignments/" + assignmentId;
-    }*/
 }

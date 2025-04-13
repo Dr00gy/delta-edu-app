@@ -25,8 +25,8 @@ public class Grade implements Auditable {
 
     private String feedback;
 
-    @OneToOne
-    @JoinColumn(name = "submission_id", nullable = false)
+    @OneToOne(optional = false)
+    @JoinColumn(name = "submission_id", unique = true)
     private Submission submission;
 
     @ManyToOne

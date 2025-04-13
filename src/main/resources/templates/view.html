@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/stylesView.css}">
-    <title>File View</title>
+    <meta charset="UTF-8">
+    <title>Zobrazení souboru</title>
 </head>
 <body>
-    <h1>File view</h1>
+<div th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+</div>
 
+<div th:if="${fileContent}">
+    <h2>Textový soubor:</h2>
+    <pre th:text="${fileContent}"></pre>
+</div>
 
-    <script th:src="@{/js/scriptView.js}"></script>
+<div th:if="${imageFilename}">
+    <h2>Obrázek:</h2>
+    <img th:src="@{'/file'(filename=${imageFilename})}" alt="Zobrazený obrázek"/>
+</div>
+
+<div th:if="${downloadFilename}">
+    <h2>Soubor k stažení:</h2>
+    <a th:href="@{'/file'(filename=${downloadFilename})}">Stáhnout soubor</a>
+</div>
 </body>
 </html>

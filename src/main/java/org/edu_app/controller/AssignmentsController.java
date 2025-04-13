@@ -16,36 +16,26 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Controller
-public class AssignmentDetailsController { // TODO: In Figma, it is the Assignment details on the very right (not a popup anymore either)
-/*
-    @GetMapping("/assignments")
-    public String showSubjectSubmissions(Model model) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String formattedDate = LocalDate.now().format(formatter);
+public class AssignmentsController {
 
-        model.addAttribute("name", "Duško");
-        model.addAttribute("date", formattedDate);
-        model.addAttribute("role", "Student");
-
-        return "assignmentDetails";
-    }*/
-    private final AssignmentService assignmentService;
     private final CurrentUserUtils currentUserUtils;
 
-    @GetMapping("/assignmentsDetailed/{id}")
-    public String showAssignmentDetails(@PathVariable Long id, Model model) {
+    @GetMapping("/assignments")
+    public String showAssignments(Model model) {
+
         var user = currentUserUtils.get();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
 
-        Assignment assignment = assignmentService.getAssignment(id);
-        model.addAttribute("assignment", assignment);
         model.addAttribute("user",currentUserUtils);
         model.addAttribute("date", formattedDate);
         model.addAttribute("now", new Date());
         model.addAttribute("name", user.getFirstName());
         model.addAttribute("role", user.getRole());
-        return "assignmentDetails";
+
+
+
+        return "assignments";
     }
 
 }

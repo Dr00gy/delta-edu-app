@@ -51,6 +51,7 @@ public class SubjectsController {
         var user = currentUserUtils.get();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = LocalDate.now().format(formatter);
+
         
         if (user != null) {
             logger.info("User found: " + user.getFirstName() + " with role " + user.getRole());
@@ -189,7 +190,7 @@ public class SubjectsController {
             }
             
             model.addAttribute("name", user.getFirstName());
-            model.addAttribute("role", user.getRole().toString()); // Convert enum to string for Thymeleaf
+            model.addAttribute("role", user.getRole());
             model.addAttribute("subject", subject); // Add the subject object to the model
             model.addAttribute("date", formattedDate);
 
@@ -199,6 +200,9 @@ public class SubjectsController {
                 List<Submission> submissions = submissionService.getSubmissionsByStudent(user.getId());
                 model.addAttribute("submissions", submissions);
             } else if (user.getRole() == Role.TEACHER) {
+                List<Assignment> assignments = assignmentService.getAssignmentsBySubjectIds(List.of(subjectId));
+                model.addAttribute("assignments", assignments);
+
                 Map<Long, Long> enrollmentCounts = enrollmentService.getEnrollmentCountsBySubject();
                 model.addAttribute("subjectEnrollmentMap", enrollmentCounts);
             }
@@ -208,6 +212,7 @@ public class SubjectsController {
             model.addAttribute("name", "Unknown");
             model.addAttribute("role", "Unknown");
         }
+
         return "subjectDetails";
     }
 }

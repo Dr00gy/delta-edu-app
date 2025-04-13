@@ -2,8 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta content="text/html; charset=UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <title>Edu Submissions</title>
+    <!-- Modal styling -->
+    <style>
+        /* Modal container – covers the full viewport with a semi-transparent background */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        /* Modal content box */
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 5px;
+            position: relative;
+        }
+        /* Close button */
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        /* Input styling inside modal */
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -33,29 +80,96 @@
         <a href="submissions">Submissions</a>
         <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
         <a href="grading">Grading</a>
+        <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+            <a href="/upload">Upload</a>
+        </div>
+        <a href="/export">Export</a>
     </nav>
 
     <div class="content">
         <div id="db-div" class="container-sub">
-          <h2>Your submissions:</h2> <!-- NOTE: Student view -->
+            <!--<div th:if="${role.toString() == 'TEACHER'}">
+                <h2>Your assignments:</h2>
+            </div>
+            <div th:if="${role.name() == 'STUDENT'}">-->
+                <h2>Your submissions:</h2> <!-- NOTE: Student view -->
+            <!--</div>-->
           <table class="custom-table">
             <thead>
                 <tr class="table-headers">
                     <th>Assignment:</th>
                     <th>Subject:</th>
                     <th>Date submitted:</th>
+                    <th th:if="${role.name() == 'STUDENT'}">Edit Comment:</th>
+                    <th th:if="${role.name() == 'TEACHER'}">Student name:</th>
                 </tr>
             </thead>
             <tbody>
             <tr th:each="submission : ${submissions}" th:data-status="${submission.submittedAt.isBefore(submission.assignment.deadline) ? 'excellent' : 'poor'}">
-                    <td th:text="${submission.getAssignment().getName()}">Assignment</td>
+                    <td>
+                        <a th:href="@{'/assignmentsDetailed/' + ${submission.assignment.id}}"
+                           th:text="${submission.assignment.name}">Assignment</a>
+                    </td>
                     <td th:text="${submission.getAssignment().getSubject().getName()}">Subject</td>
                     <td th:text="${#temporals.format(submission.getSubmittedAt(), 'dd.MM.yyyy')}">SubmittedAt</td>
+                    <td th:if="${role.name() == 'TEACHER'}" th:text="${submission.student.firstName} + ' ' + ${submission.student.lastName}">Student Name</td>
+                    <td th:if="${role.name() == 'STUDENT'}">
+                        <button class="settings-btn"
+                                onclick="openSettingsModal(this)"
+                                th:attr="data-submission-id=${submission.id},
+                                data-student-comment=${submission.studentComment},
+                                 data-assignment-id=${submission.assignment.id},
+                                 data-assignment-name=${submission.assignment.name},
+                                 data-assignment-description=${submission.assignment.description},
+                                 data-max-points=${submission.assignment.maxPoints},
+                                 data-deadline=${#temporals.format(submission.assignment.deadline, 'yyyy-MM-dd''T''HH:mm')}">
+                            <img th:src="@{/images/settings_white.svg}" alt="Settings">
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
         </div>
+    </div>
 
-<script th:src="@{/js/script.js}"></script>
+    <!-- Modal popup structure -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleSettings()">&times;</span>
+            <div id="modalBody">
+                <!-- If student, show comment edit area -->
+                <div id="studentModal" th:if="${role.name() == 'STUDENT'}">
+                    <h3>Edit Your Comment</h3>
+                    <textarea id="studentComment" rows="5">Your comment here...</textarea>
+                </div>
+                <!-- If teacher, show assignment update form -->
+                <div id="teacherModal" th:if="${role.name() == 'TEACHER'}">
+                    <h3>Update Assignment</h3>
+                    <form id="assignmentForm">
+                        <label for="assignmentName">Assignment Name:</label>
+                        <input type="text" id="assignmentName" name="assignmentName" />
+
+                        <label for="assignmentDescription">Description:</label>
+                        <textarea id="assignmentDescription" name="assignmentDescription" rows="5"></textarea>
+
+                        <label for="maxPoints">Max Points:</label>
+                        <input type="number" id="maxPoints" name="maxPoints" />
+
+                        <label for="deadline">Deadline:</label>
+                        <input type="datetime-local" id="deadline" name="deadline" />
+                    </form>
+                </div>
+            </div>
+            <button onclick="confirmAction()">Confirm</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // This will be processed by Thymeleaf, setting the correct role dynamically.
+        var currentRole = [[${role.name()}]];
+        console.log("Current role: " + currentRole);
+    </script>
+    <script th:src="@{/js/editButton.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>

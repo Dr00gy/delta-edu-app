@@ -1,0 +1,36 @@
+//TODO 1. gradeAssignment upravit vzhled pop up okna, otestovat prvne nahrat soubor k necemu a pak gradnout
+//TODO 2. Pridat tlacitko v upload zalozce na vraceni se zpatky na domovskou stranku
+//TODO 3. mozna pridat ze po nekterych ajax funkcich se refreshne stranka automaticky
+
+/*
+* <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zobrazení souboru</title>
+</head>
+<body>
+    <div th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${fileContent}">
+        <h2>Textový soubor:</h2>
+        <pre th:text="${fileContent}"></pre>
+    </div>
+
+    <div th:if="${imageFilename}">
+        <h2>Obrázek:</h2>
+        <img th:src="@{'/file'(filename=${imageFilename})}" alt="Zobrazený obrázek"/>
+    </div>
+
+    <div th:if="${downloadFilename}">
+        <h2>Soubor k stažení:</h2>
+        <a th:href="@{'/file'(filename=${downloadFilename})}">Stáhnout soubor</a>
+    </div>
+</body>
+</html>
+*
+* */
+
+

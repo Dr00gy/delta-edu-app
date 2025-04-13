@@ -38,6 +38,10 @@ public class Submission implements Auditable {
     @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
+    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Grade grade;
+
+
     @Transient // fixes sql errors for getting latest submissions
     private String operation;
 

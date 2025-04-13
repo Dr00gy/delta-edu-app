@@ -17,7 +17,7 @@
           <button class="mode-toggle" onclick="toggleMode()">
             <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
           </button>
-          <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+          <button class="logout"><a href="/login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
         </div>
       </header>
 
@@ -32,8 +32,33 @@
         <a href="/submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="/grading">Grading</a>
+        <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+            <a href="/upload">Upload</a>
+        </div>
+        <a href="/export">Export</a>
     </nav>
 
-<script th:src="@{/js/menu.js}"></script>
+    <div class="content">
+        <div id="db-div" class="container-sub">
+            <h2>Assignment:</h2>
+            <table class="custom-table">
+        <h1 th:text="${assignment.name}">Assignment Title</h1>
+
+        <div>
+            <p><strong>Description:</strong></p>
+            <p th:text="${assignment.description}">Assignment description goes here...</p>
+        </div>
+
+        <div>
+            <p><strong>Deadline:</strong> <span th:text="${#temporals.format(assignment.deadline, 'dd.MM.yyyy HH:mm')}"></span></p>
+            <p>Current time: <span th:text="${#dates.format(now, 'dd.MM.yyyy HH:mm')}"></span></p>
+            <p><strong>Max Points:</strong> <span th:text="${assignment.maxPoints}"></span></p>
+        </div>
+
+            </table>
+        </div>
+    </div>
+
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>

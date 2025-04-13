@@ -30,11 +30,15 @@
           <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
           <a href="/">Dashboard</a>
           <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
-          <a href="subjects">Subjects</a>
+          <a href="/subjects">Subjects</a>
           <!-- For students, a view of their homework and projects listed by subject. For teachers, student works listed by subject. -->
-          <a href="submissions">Submissions</a>
+          <a href="/submissions">Submissions</a>
           <!-- For students, grades listed by subject. For teachers, grades they have given to each student listed by subject. -->
-          <a href="grading">Grading</a>
+          <a href="/grading">Grading</a>
+          <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+              <a href="/upload">Upload</a>
+          </div>
+            <a href="/export">Export</a>
         </nav>
   
         <div class="content"> <!-- TODO: finish this page like in FIgma, GradingController -->
@@ -83,26 +87,30 @@
             </table>
             
             <!-- For TEACHER role, you need to upload an assignment as a student to see a record -->
-            <table th:if="${role.name() == 'TEACHER'}" class="custom-table">
-              <thead>
-                <tr class="table-headers">
-                  <th>Assignment:</th>
-                  <th>Subject:</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="submission : ${ungradedSubmissions}">
-                  <td>
-                    <a th:href="@{'/assignments/' + ${submission.assignment.id}}" th:text="${submission.assignment.name}">Assignment Name</a>
-                  </td>
-                  <td th:text="${submission.assignment.subject.name}">Subject Name</td>
-                </tr>
-              </tbody>
-            </table>
+              <table th:if="${role.name() == 'TEACHER'}" class="custom-table">
+                  <thead>
+                  <tr class="table-headers">
+                      <th>Submission:</th>
+                      <th>Subject:</th>
+                      <th>Deadline:</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="submission : ${ungradedSubmissions}">
+                      <td>
+                          <a th:href="@{'/assignments/' + ${submission.assignment.id}}"
+                             style="color: #3a7dcf; text-decoration: none; font-weight: 500;"
+                             th:text="${submission.assignment.name}">Assignment Name</a>
+                      </td>
+                      <td th:text="${submission.assignment.subject.name}">Subject Name</td>
+                      <td th:text="${#temporals.format(submission.assignment.deadline, 'dd.MM.yyyy HH:mm')}">Deadline</td>
+                  </tr>
+                  </tbody>
+              </table>
           </div>
-  
+        </div>
       </div>
-      <script th:src="@{/js/script.js}"></script>
 
+    <script th:src="@{/js/script.js}"></script>
     </body>
 </html>

@@ -63,12 +63,17 @@ body.light-mode {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 65%;
+    margin-left: 220px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
     background: #ebebeb;
     padding: 20px;
-    padding-left: 40px;
+    gap: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    flex-grow: 1; /* Takes up the remaining space */
+    transition: margin-left 0.3s ease;
 }
 
 .session-info {
@@ -87,6 +92,11 @@ body.light-mode {
     font-size: 14px;
     margin-top: 18px;
     font-weight: 500;
+}
+
+.bigger-p2 {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .header-actions {
@@ -410,3 +420,5 @@ body.dark-mode .logout-icon {
     border-radius: 4px;
     cursor: pointer;
   }
+
+

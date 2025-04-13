@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta content="text/html; charset=UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <title>Edu Subjects</title>
 </head>
@@ -20,7 +22,7 @@
         <button class="manage-users" th:if="${role == 'TEACHER' || role == 'ADMIN'}">
           <img class="manage-users-icon" th:src="@{/images/manage-users.svg}" alt="Manage Users" />
         </button>
-        <button class="logout"><a href="login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+        <button class="logout"><a href="/login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
       </div>
     </header>
 
@@ -30,9 +32,13 @@
       <nav class="menu" id="menu">
         <button class="close-btn" id="close-menu">←</button>
         <a href="/">Dashboard</a>
-        <a href="subjects">Subjects</a>
-        <a href="submissions">Submissions</a>
-        <a href="grading">Grading</a>
+        <a href="/subjects">Subjects</a>
+        <a href="/submissions">Submissions</a>
+        <a href="/grading">Grading</a>
+        <div th:if="${role.toString() == 'STUDENT' or role.toString() == 'ADMIN'}">
+          <a href="/upload">Upload</a>
+        </div>
+        <a href="/export">Export</a>
       </nav>
 
       <div class="content">

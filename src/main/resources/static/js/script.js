@@ -343,14 +343,19 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Function to add student to subject
     function addStudentToSubject(studentId, subjectId) {
-      fetch('/api/enrollments', {
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
+        fetch('/api/enrollments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+            [csrfHeader]: csrfToken
         },
         body: JSON.stringify({
           studentId: studentId,
           subjectId: subjectId
+
         })
       })
       .then(response => {
@@ -373,9 +378,16 @@ function removeStudentFromSubject(studentId, subjectId) {
     if (!confirm('Are you sure you want to remove this student from the selected subject?')) {
       return;
     }
-    
+
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
     fetch(`/api/enrollments/student/${studentId}/subject/${subjectId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+        headers: {
+
+            [csrfHeader]: csrfToken
+        }
     })
     .then(response => {
       if (!response.ok) {
@@ -395,8 +407,14 @@ function removeStudentFromSubject(studentId, subjectId) {
   
   // Function to remove student from all subjects (for admins)
   function removeStudentFromAllSubjects(studentId) {
+      const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
     fetch(`/api/enrollments/student/${studentId}/all`, {
-      method: 'DELETE'
+      method: 'DELETE',
+        headers: {
+
+            [csrfHeader]: csrfToken
+        }
     })
     .then(response => {
       if (!response.ok) {
@@ -414,3 +432,29 @@ function removeStudentFromSubject(studentId, subjectId) {
     });
   }
   });
+
+
+// Add this to your existing script.js or as a new script tag
+document.addEventListener('DOMContentLoaded', function() {
+    const backButton = document.querySelector('.back-button');
+
+    // Initial setup based on current mode
+    if (document.body.classList.contains('dark-mode')) {
+        backButton.style.backgroundColor = '#333';
+        backButton.style.color = 'white';
+    }
+
+    // Update button when theme changes
+    const modeToggle = document.querySelector('.mode-toggle');
+    modeToggle.addEventListener('click', function() {
+        if (document.body.classList.contains('dark-mode')) {
+            backButton.style.backgroundColor = '#333';
+            backButton.style.color = 'white';
+        } else {
+            backButton.style.backgroundColor = '#ebebeb';
+            backButton.style.color = 'black';
+        }
+    });
+});
+
+

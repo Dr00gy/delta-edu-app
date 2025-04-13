@@ -2,6 +2,8 @@ package org.edu_app.controller;
 
 import org.edu_app.Main;
 import org.edu_app.repository.SubmissionRepository;
+import org.edu_app.service.AssignmentService;
+import org.edu_app.service.SubjectService;
 import org.edu_app.service.SubmissionService;
 import org.edu_app.utils.CurrentUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,13 @@ public class SubmissionsController {
     SubmissionService submissionService;
 
     @Autowired
+    AssignmentService assignmentService;
+
+    @Autowired
     CurrentUserUtils currentUserUtils;
+
+    @Autowired
+    SubjectService subjectService;
 
     @GetMapping("/submissions")
     public String showSubmissions(Model model) {
@@ -37,6 +45,8 @@ public class SubmissionsController {
         var submissions = switch (user.getRole()) {
             case STUDENT -> submissionService.getSubmissionsByStudent(id);
             case TEACHER -> submissionService.getSubmissionsByTeacher(id);
+            /*case TEACHER -> assignmentService.getAssignmentsBySubjectIds(subjectService.getSubjectsByTeacherIdReturnId(id));*/
+
             case ADMIN -> submissionService.getAllSubmissions();
         };
 

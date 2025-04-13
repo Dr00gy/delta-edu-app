@@ -1,6 +1,8 @@
 package org.edu_app.controller;
 
 import org.edu_app.model.dto.UserDTO;
+import org.edu_app.model.entity.GradeLog;
+import org.edu_app.repository.GradeLogRepository;
 import org.edu_app.service.ExportLogService;
 import org.edu_app.service.ExportLogService.ExportRecord;
 import org.edu_app.utils.CurrentUserUtils;
@@ -34,6 +36,9 @@ public class DashboardController {
     private GradeService gradeService;
 
     @Autowired
+    private GradeLogRepository gradeLogRepository;
+
+    @Autowired
     private ExportLogService exportLogService;
 
     @Autowired
@@ -60,7 +65,9 @@ public class DashboardController {
             else if (user.getRole() == Role.TEACHER) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissionsByTeacher(user.getId());
                 model.addAttribute("submissions", latestSubmissions);
-                model.addAttribute("grades", List.of()); // Empty list def TODO: for admin and teacher listen for latest grades submissions, will have to create some log like exportLog class or use audit listener
+
+                List<GradeLog> latestGradeAuditLogs = gradeLogRepository.findTop5ByOrderByTimestampDesc();
+                model.addAttribute("grades", latestGradeAuditLogs);// Empty list def TODO: DONE?      for admin and teacher listen for latest grades submissions, will have to create some log like exportLog class or use audit listener
             } 
             else if (user.getRole() == Role.ADMIN) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissions();

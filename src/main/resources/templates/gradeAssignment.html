@@ -2,51 +2,106 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta content="text/html; charset=UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
-    <title>Grade Assignment - ${assignment.name}</title>
+    <title th:text="'Grade Assignment - ' + ${assignment.name}">Grade Assignment</title>
 </head>
 <body>
-
-    <header class="header">
-        <div class="session-info">
-          <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
-          <p class="lesser-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
-        </div>
-    </header>
-
-    <div class="main-container">
-        <h2>Grade Assignment: <span th:text="${assignment.name}">Assignment Name</span></h2>
-        
-        <form th:action="@{/assignments/{assignmentId}/grade(submissionId=${submission.id})}" method="POST">
-            <table class="custom-table">
-                <thead>
-                    <tr class="table-headers">
-                        <th>Student Name</th>
-                        <th>Score</th>
-                        <th>Grade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="submission : ${ungradedSubmissions}">
-                        <td th:text="${submission.student.name}">Student Name</td>
-                        <td><input type="text" name="score" th:value="${submission.score}"/></td>
-                        <td>
-                            <select name="grade">
-                                <option value="A" th:selected="${submission.grade == 'A'}">A</option>
-                                <option value="B" th:selected="${submission.grade == 'B'}">B</option>
-                                <option value="C" th:selected="${submission.grade == 'C'}">C</option>
-                                <option value="D" th:selected="${submission.grade == 'D'}">D</option>
-                                <option value="F" th:selected="${submission.grade == 'F'}">F</option>
-                            </select>
-                        </td>
-                        <td><button type="submit">Grade</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+<header class="header">
+    <div class="session-info">
+        <p class="bigger-p" th:text="|Hello, ${name}!|">Hello, user!</p>
+        <p class="lesser-p" th:text="|Today is ${date}|">Today is ...</p>
+        <p class="bigger-p" th:text="|You are logged in as ${role}.|">You are logged in as ...</p>
     </div>
 
-    <script th:src="@{/js/script.js}"></script>
+    <div class="header-actions">
+        <button class="mode-toggle" onclick="toggleMode()">
+            <img class="mode-icon" th:src="@{/images/mode.svg}" alt="Dark / Light Mode" />
+        </button>
+        <button class="logout"><a href="/login"><img class="logout-icon" th:src="@{/images/logout.svg}" alt="Logout"/></a></button>
+    </div>
+</header>
+<button class="burger" onclick="toggleMenu()">☰</button>
+<nav class="menu" id="menu">
+    <button class="close-btn" id="close-menu">←</button>
+    <!-- Some quick overview of stuff from the other pages with a link and who is logged in at what date. -->
+    <a href="/">Dashboard</a>
+    <!-- For students, a list of subjects they are signed into. For teachers, subjects that they manage and signed in students. -->
+    <a href="/subjects">Subjects</a>
+    <!-- For students, a view of their homework and projects listed by course. For teachers, student works listed by course. -->
+    <a href="/submissions">Submissions</a>
+    <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
+    <a href="/grading">Grading</a>
+    <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+        <a href="/upload">Upload</a>
+    </div>
+    <a href="/export">Export</a>
+</nav>
 
+<div class="content">
+    <div id="db-div" class="container-sub">
+    <h2>Grade Assignment: <span th:text="${assignment.name}">Assignment Name</span></h2>
+
+    <table class="custom-table">
+        <thead>
+        <tr class="table-headers">
+            <th>Assignment</th>
+            <th>Student Name</th>
+            <th>Submitted At</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="submission : ${ungradedSubmissions}">
+            <!--
+                 Wrapping each row in its own form so the action can use the submission variable.
+                 The URL includes the assignmentId (from the assignment object) and the submission id.
+            -->
+            <form th:action="@{/assignments/{assignmentId}/grade(submissionId=${submission.id})}" method="post">
+                <td th:text="${assignment.name}">Assignment Name</td>
+                <td th:text="${submission.student.firstName} + ' ' + ${submission.student.lastName}">Student Name</td>
+                <td th:text="${#temporals.format(submission.submittedAt, 'dd.MM.yyyy HH:mm')}">Submitted At</td>
+                <td>
+                    <button type="button" class="grade-btn"
+                            onclick="openGradeModal(this)"
+                            th:attr="data-submission-id=${submission.id}">
+                        <img th:src="@{/images/settings_black.svg}" alt="Grade"/>
+                    </button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<!-- Grade Submission Modal -->
+<div id="gradeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleGradeModal()">&times;</span>
+        <div id="gradeModalBody">
+            <!-- Submission details loaded via AJAX -->
+            <div id="submissionDetails">
+                <p><strong>Student:</strong> <span id="gradeStudentName"></span></p>
+                <p><strong>Uploaded File:</strong> <span id="gradeUploadedFile"></span></p>
+                <!-- If it’s an image, we display an image; if not, display text -->
+                <div id="gradeFileContent"></div>
+                <p><strong>Comment:</strong> <span id="gradeStudentComment"></span></p>
+            </div>
+            <!-- Teacher grading inputs -->
+            <div id="gradeInputs">
+                <label for="gradeScore">Grade (0-100):</label>
+                <input type="number" id="gradeScore" name="gradeScore" min="0" max="100" required />
+
+                <label for="teacherFeedback">Feedback:</label>
+                <textarea id="teacherFeedback" name="teacherFeedback" rows="3"></textarea>
+            </div>
+        </div>
+        <button type="button" onclick="confirmGrade()">Submit Grade</button>
+    </div>
+</div>
+<script th:src="@{/js/gradeAssignmentAjax.js}"></script>
+<script th:src="@{/js/editButton.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

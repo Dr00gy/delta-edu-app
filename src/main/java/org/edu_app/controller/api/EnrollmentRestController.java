@@ -32,12 +32,12 @@ public class EnrollmentRestController {
     @PostMapping
     public ResponseEntity<?> createEnrollment(@RequestBody EnrollmentCreateDTO enrollmentCreateDTO) {
         var currentUser = currentUserUtils.get();
-        
+
         // Verify that the user is admin or teacher
         if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
             return ResponseEntity.status(403).build();
         }
-        
+
         // If user is a teacher, verify they teach this subject
         if (currentUser.getRole().equals(Role.TEACHER)) {
             Subject subject = subjectService.getSubject(enrollmentCreateDTO.getSubjectId());
@@ -45,14 +45,14 @@ public class EnrollmentRestController {
                 return ResponseEntity.status(403).body("You can only enroll students in subjects you teach");
             }
         }
-        
+
         // Check if student is already enrolled
         if (enrollmentService.isStudentEnrolledInSubject(
-                enrollmentCreateDTO.getStudentId(), 
+                enrollmentCreateDTO.getStudentId(),
                 enrollmentCreateDTO.getSubjectId())) {
             return ResponseEntity.badRequest().body("Student is already enrolled in this subject");
         }
-        
+
         try {
             enrollmentService.addEnrollment(enrollmentCreateDTO);
             return ResponseEntity.ok().build();
@@ -60,104 +60,104 @@ public class EnrollmentRestController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
-@DeleteMapping("/student/{studentId}/subject/{subjectId}")
-public ResponseEntity<?> removeEnrollment(@PathVariable Long studentId, @PathVariable Long subjectId) {
-    var currentUser = currentUserUtils.get();
-    
-    // Verify that the user is admin or teacher
-    if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
-        return ResponseEntity.status(403).build();
-    }
-    
-    // If user is a teacher, verify they teach this subject
-    if (currentUser.getRole().equals(Role.TEACHER)) {
-        Subject subject = subjectService.getSubject(subjectId);
-        if (subject.getTeacher() == null || !subject.getTeacher().getId().equals(currentUser.getId())) {
-            return ResponseEntity.status(403).body("You can only remove students from subjects you teach");
-        }
-    }
-    
-    try {
-        // Find and delete the enrollment
-        boolean enrollmentFound = false;
-        for (Enrollment enrollment : enrollmentService.getAllEnrollments()) {
-            if (enrollment.getStudent().getId().equals(studentId) && 
-                enrollment.getSubject().getId().equals(subjectId)) {
-                
-                enrollmentService.deleteEnrollment(enrollment.getId());
-                enrollmentFound = true;
-                break;
-            }
-        }
-        
-        if (!enrollmentFound) {
-            return ResponseEntity.status(404).body("Enrollment not found");
-        }
-        
-        return ResponseEntity.ok().build();
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-}
-    
-@DeleteMapping("/student/{studentId}/all")
-public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
-    var currentUser = currentUserUtils.get();
-    
-    // Only admins can remove students from all subjects at once!
-    if (currentUser == null || !currentUser.getRole().equals(Role.ADMIN)) {
-        return ResponseEntity.status(403).build();
-    }
-    
-    try {
-        // Find all enrollments for this student and delete them
-        List<Enrollment> studentEnrollments = enrollmentService.getAllEnrollments().stream()
-            .filter(e -> e.getStudent().getId().equals(studentId))
-            .collect(Collectors.toList());
-            
-        if (studentEnrollments.isEmpty()) {
-            return ResponseEntity.status(404).body("No enrollments found for this student");
-        }
-        
-        for (Enrollment enrollment : studentEnrollments) {
-            enrollmentService.deleteEnrollment(enrollment.getId());
-        }
-        
-        return ResponseEntity.ok().build();
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-}
-    
-    @GetMapping("/student/{studentId}/subjects")
-    public ResponseEntity<List<SubjectDTO>> getStudentSubjects(@PathVariable Long studentId) {
+
+    @DeleteMapping("/student/{studentId}/subject/{subjectId}")
+    public ResponseEntity<?> removeEnrollment(@PathVariable Long studentId, @PathVariable Long subjectId) {
         var currentUser = currentUserUtils.get();
-        
+
         // Verify that the user is admin or teacher
         if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
             return ResponseEntity.status(403).build();
         }
-        
+
+        // If user is a teacher, verify they teach this subject
+        if (currentUser.getRole().equals(Role.TEACHER)) {
+            Subject subject = subjectService.getSubject(subjectId);
+            if (subject.getTeacher() == null || !subject.getTeacher().getId().equals(currentUser.getId())) {
+                return ResponseEntity.status(403).body("You can only remove students from subjects you teach");
+            }
+        }
+
+        try {
+            // Find and delete the enrollment
+            boolean enrollmentFound = false;
+            for (Enrollment enrollment : enrollmentService.getAllEnrollments()) {
+                if (enrollment.getStudent().getId().equals(studentId) &&
+                        enrollment.getSubject().getId().equals(subjectId)) {
+
+                    enrollmentService.deleteEnrollment(enrollment.getId());
+                    enrollmentFound = true;
+                    break;
+                }
+            }
+
+            if (!enrollmentFound) {
+                return ResponseEntity.status(404).body("Enrollment not found");
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/student/{studentId}/all")
+    public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
+        var currentUser = currentUserUtils.get();
+
+        // Only admins can remove students from all subjects at once!
+        if (currentUser == null || !currentUser.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        try {
+            // Find all enrollments for this student and delete them
+            List<Enrollment> studentEnrollments = enrollmentService.getAllEnrollments().stream()
+                    .filter(e -> e.getStudent().getId().equals(studentId))
+                    .collect(Collectors.toList());
+
+            if (studentEnrollments.isEmpty()) {
+                return ResponseEntity.status(404).body("No enrollments found for this student");
+            }
+
+            for (Enrollment enrollment : studentEnrollments) {
+                enrollmentService.deleteEnrollment(enrollment.getId());
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/student/{studentId}/subjects")
+    public ResponseEntity<List<SubjectDTO>> getStudentSubjects(@PathVariable Long studentId) {
+        var currentUser = currentUserUtils.get();
+
+        // Verify that the user is admin or teacher
+        if (currentUser == null || (!currentUser.getRole().equals(Role.ADMIN) && !currentUser.getRole().equals(Role.TEACHER))) {
+            return ResponseEntity.status(403).build();
+        }
+
         try {
             // Find all subjects this student is enrolled in
             List<Subject> studentSubjects = new ArrayList<>();
-            
+
             enrollmentService.getAllEnrollments().stream()
-                .filter(e -> e.getStudent().getId().equals(studentId))
-                .forEach(e -> studentSubjects.add(e.getSubject()));
-                
+                    .filter(e -> e.getStudent().getId().equals(studentId))
+                    .forEach(e -> studentSubjects.add(e.getSubject()));
+
             // Convert to DTOs
             List<SubjectDTO> subjectDTOs = studentSubjects.stream()
-                .map(this::convertToSubjectDTO)
-                .collect(Collectors.toList());
-                
+                    .map(this::convertToSubjectDTO)
+                    .collect(Collectors.toList());
+
             return ResponseEntity.ok(subjectDTOs);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     @GetMapping("/teacher-students")
     public ResponseEntity<List<UserDTO>> getTeacherStudents() {
         var currentUser = currentUserUtils.get();
@@ -180,9 +180,9 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
                 for (User user : allUsers) {
                     // Check if user is a student and enrolled in this subject
                     if (user.getRole().equals(Role.STUDENT) &&
-                        user.getEnrollments().stream().anyMatch(enr -> 
-                            enr.getSubject() != null && 
-                            enr.getSubject().getId().equals(subject.getId()))) {
+                            user.getEnrollments().stream().anyMatch(enr ->
+                                    enr.getSubject() != null &&
+                                            enr.getSubject().getId().equals(subject.getId()))) {
 
                         // Duplicates handling
                         if (!students.contains(user)) {
@@ -213,7 +213,7 @@ public ResponseEntity<?> removeAllEnrollments(@PathVariable Long studentId) {
         dto.setRole(user.getRole());
         return dto;
     }
-    
+
     private SubjectDTO convertToSubjectDTO(Subject subject) {
         SubjectDTO dto = new SubjectDTO();
         dto.setId(subject.getId());

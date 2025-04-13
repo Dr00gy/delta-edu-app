@@ -32,6 +32,10 @@
         <a href="/submissions">Submissions</a>
         <!-- For students, grades listed by course. For teachers, grades they have given to each student listed by course. -->
         <a href="/grading">Grading</a>
+        <div th:if="${role.name() == 'STUDENT' or role.name() == 'ADMIN'}">
+            <a href="/upload">Upload</a>
+        </div>
+        <a href="/export">Export</a>
     </nav>
 
 <script th:src="@{/js/menu.js}"></script>

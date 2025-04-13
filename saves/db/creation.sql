@@ -52,6 +52,7 @@ CREATE TABLE submissions (
     assignment_id INT NOT NULL,
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE
+
 );
 
 CREATE TABLE grades (
@@ -63,3 +64,4 @@ CREATE TABLE grades (
     FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
     FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
