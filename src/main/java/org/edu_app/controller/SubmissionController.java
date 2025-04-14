@@ -27,7 +27,6 @@ public class SubmissionController {
         submissionService.addSubmission(submission);
     }
 
-    // EDIT Komentáře od studenta // todo zde komentar na upravu ?
     @PutMapping("/update/{id}")
     public void updateSubmission(@PathVariable Long id, @RequestBody SubmissionDTO submissionDTO) {
         Submission submission = modelMapper.map(submissionDTO, Submission.class);

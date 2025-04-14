@@ -1,7 +1,3 @@
-//TODO 1. gradeAssignment upravit vzhled pop up okna, otestovat prvne nahrat soubor k necemu a pak gradnout
-//TODO 2. Pridat tlacitko v upload zalozce na vraceni se zpatky na domovskou stranku
-//TODO 3. mozna pridat ze po nekterych ajax funkcich se refreshne stranka automaticky
-
 /*
 * <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">

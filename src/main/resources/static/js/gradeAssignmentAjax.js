@@ -25,14 +25,39 @@ function openGradeModal(btn) {
             // Populate the modal fields.
             document.getElementById("gradeStudentName").textContent = data.studentName;
             document.getElementById("gradeUploadedFile").textContent = data.uploadedFileName;
-            // If fileType indicates an image, display an image; otherwise, show text.
+            
+            const fileContentElement = document.getElementById("gradeFileContent");
+            fileContentElement.innerHTML = ''; // Clear previous content
+            
+            // Display file content based on file type
             if (data.fileType === 'image') {
-                document.getElementById("gradeFileContent").innerHTML =
-                    '<img src="' + data.fileContent + '" alt="Submitted image" style="max-width:200px;" />';
+                // For images, create an img element with the base64 data
+                const img = document.createElement('img');
+                img.src = data.fileContent; // This should be a base64 data URL
+                img.alt = "Submitted image";
+                img.style.maxWidth = "100%";
+                img.style.borderRadius = "4px";
+                img.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+                fileContentElement.appendChild(img);
+            } else if (data.fileType === 'text') {
+                // For text files, create a pre element for formatted display
+                const pre = document.createElement('pre');
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.maxHeight = '300px';
+                pre.style.overflow = 'auto';
+                pre.style.padding = '10px';
+                pre.style.backgroundColor = '#f5f5f5';
+                pre.style.border = '1px solid #ddd';
+                pre.style.borderRadius = '4px';
+                pre.style.fontSize = '14px';
+                pre.textContent = data.fileContent;
+                fileContentElement.appendChild(pre);
             } else {
-                document.getElementById("gradeFileContent").textContent = data.fileContent;
+                // For other file types or if no file
+                fileContentElement.textContent = data.fileContent || "No file content available";
             }
-            document.getElementById("gradeStudentComment").textContent = data.studentComment;
+            
+            document.getElementById("gradeStudentComment").textContent = data.studentComment || "No comment provided";
 
             // Clear previous inputs.
             document.getElementById("gradeScore").value = "";
@@ -80,7 +105,8 @@ function confirmGrade() {
         .then(result => {
             console.log("Grade update successful:", result);
             toggleGradeModal();
-            // Optionally, refresh the page or remove this submission from the table.
+            // Redirect to the grading page after successful update
+            window.location.href = "/grading";
         })
         .catch(error => {
             console.error("Error in grade update fetch:", error);

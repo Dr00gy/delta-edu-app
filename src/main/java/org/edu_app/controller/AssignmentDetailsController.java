@@ -16,7 +16,7 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Controller
-public class AssignmentDetailsController { // TODO: In Figma, it is the Assignment details on the very right (not a popup anymore either)
+public class AssignmentDetailsController {
 /*
     @GetMapping("/assignments")
     public String showSubjectSubmissions(Model model) {

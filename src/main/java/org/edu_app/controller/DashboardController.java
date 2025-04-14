@@ -67,7 +67,7 @@ public class DashboardController {
                 model.addAttribute("submissions", latestSubmissions);
 
                 List<GradeLog> latestGradeAuditLogs = gradeLogRepository.findTop5ByOrderByTimestampDesc();
-                model.addAttribute("grades", latestGradeAuditLogs);// Empty list def TODO: DONE?      for admin and teacher listen for latest grades submissions, will have to create some log like exportLog class or use audit listener
+                model.addAttribute("grades", latestGradeAuditLogs);
             } 
             else if (user.getRole() == Role.ADMIN) {
                 List<Submission> latestSubmissions = submissionService.getLatestSubmissions();

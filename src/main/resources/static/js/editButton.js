@@ -93,6 +93,9 @@ function confirmAction() {
             .then(result => {
                 console.log("Update successful", result);
                 toggleSettings();  // Hide the modal
+                
+                // Refresh the page content via AJAX
+                refreshPageContent();
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -138,12 +141,64 @@ function confirmAction() {
             .then(result => {
                 console.log("Assignment update successful", result);
                 toggleSettings();  // Hide the modal on success.
+                
+                // Refresh the page content via AJAX
+                refreshPageContent();
             })
             .catch(error => {
                 console.error("Error:", error);
                 toggleSettings();
             });
     }
+}
+
+// Refresh the page content using AJAX
+function refreshPageContent() {
+    const subjectId = document.getElementById('subjectIdHolder').getAttribute('data-subject-id');
+    
+    // Retrieval of CSRF token and header
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+    
+    fetch(`/subjects/${subjectId}`, {
+        method: 'GET',
+        headers: {
+            [csrfHeader]: csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Parse HTML response
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Update only relevant stuff
+        const newContent = doc.querySelector('.content');
+        if (newContent) {
+            document.querySelector('.content').innerHTML = newContent.innerHTML;
+        }
+        
+        // Reattach event listeners to the new DOM elements
+        reattachEventListeners();
+    })
+    .catch(error => {
+        console.error("Error refreshing page:", error);
+        // Fallback to full page refresh if AJAX fails
+        window.location.reload();
+    });
+}
+
+// Function 2 reattach event listeners after DOM update
+function reattachEventListeners() {
+    // Find all settings buttons and reattach event listeners
+    const settingsButtons = document.querySelectorAll('.settings-btn');
+    settingsButtons.forEach(btn => {
+        btn.onclick = function() {
+            openSettingsModal(this);
+        };
+    });
+    
 }
 
 // Close the modal if clicking outside its content.
